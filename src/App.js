@@ -9,9 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
-        <p>
-          Edit <code>src/App.js</code> Pham Tuan Dat
-        </p>
+        <p>Ngay mai se khac</p>
         <span>
           <span>Learn </span>
           <a
