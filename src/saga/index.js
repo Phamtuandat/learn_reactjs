@@ -1,4 +1,4 @@
-function* testSaga() {
+const testSaga = function* () {
    yield true
 }
 
