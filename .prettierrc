@@ -4,16 +4,16 @@
     "embeddedLanguageFormatting": "auto",
     "htmlWhitespaceSensitivity": "css",
     "insertPragma": false,
-    "jsxBracketSameLine": true,
+    "jsxBracketSameLine": false,
     "jsxSingleQuote": false,
-    "proseWrap": "preserve",
+    "proseWrap": "always",
     "quoteProps": "as-needed",
     "requirePragma": false,
     "semi": false,
     "singleQuote": true,
-    "tabWidth": 3,
+    "tabWidth": 2,
     "trailingComma": "es5",
-    "useTabs": false,
+    "useTabs": true,
     "vueIndentScriptAndStyle": false,
-    "printWidth": 120
+    "printWidth": 100
 }

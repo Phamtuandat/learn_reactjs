@@ -1,7 +1,12 @@
+import { put, takeEvery } from '@redux-saga/core/effects'
+import { decrease, increase } from '../features/counter/couterSlice'
 const testSaga = function* () {
-   yield true
+	while (true) {
+		yield put({ increase })
+		yield put({ decrease })
+	}
 }
 
 export default function* rootSaga() {
-   yield testSaga
+	yield takeEvery('increase/decrease', testSaga)
 }
