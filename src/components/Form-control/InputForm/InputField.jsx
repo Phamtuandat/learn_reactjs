@@ -14,8 +14,8 @@ function InputField({ form, disabled, name, label }) {
 			disabled={disabled}
 			render={({ field }) => (
 				<TextField
-					error={errors[name]?.message}
-					helperText={errors[name]?.message}
+					error={errors[name] ? true : false}
+					helperText={errors[name] ? errors[name].message : ''}
 					{...field}
 					fullWidth
 					variant="outlined"

@@ -1,9 +1,11 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import RegisterForm from '../RegisterForm'
 
 function Register() {
-	const handleSubmit = (value) => {
-		console.log(value)
+	const dispatch = useDispatch()
+	const handleSubmit = async (payload) => {
+		dispatch({ type: 'register', payload })
 	}
 	return (
 		<div>

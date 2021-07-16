@@ -3,8 +3,6 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -72,17 +70,12 @@ export default function NavBar() {
 				aria-labelledby="form-dialog-title"
 				disableEscapeKeyDown
 			>
-				<DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
 				<DialogContent>
-					<DialogContentText></DialogContentText>
 					<Register />
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose} color="primary">
+					<Button onClick={handleClose} variant="outlined" color="secondary">
 						Cancel
-					</Button>
-					<Button onClick={handleClose} color="primary">
-						Subscribe
 					</Button>
 				</DialogActions>
 			</Dialog>
