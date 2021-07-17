@@ -1,14 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import userAPI from 'api/userAPI'
 
+export const register = createAsyncThunk('user/register', async (payload) => {
+	//call api to register
+	const { data } = await userAPI.register(payload)
+	// save data to localstorage
+	localStorage.setItem('jwt', data.jwt)
+	return data.user
+})
 const authSlice = createSlice({
-	name: 'authSlice',
-	initialState: [],
-	reducers: {
-		register(state, action) {
-			return (state = action.payload)
+	name: 'user',
+	initialState: {
+		current: {},
+		setting: {},
+	},
+	reducers: {},
+	extraReducers: {
+		[register.fulfilled]: (state, action) => {
+			state.current = action.payload
 		},
 	},
 })
-const { actions, reducer } = authSlice
-export const { register } = actions
+const { reducer } = authSlice
 export default reducer

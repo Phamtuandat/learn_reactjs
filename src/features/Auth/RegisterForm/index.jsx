@@ -10,7 +10,8 @@ import * as yup from 'yup'
 
 const useStyle = makeStyles((theme) => ({
 	root: {
-		margin: theme.spacing(4),
+		padding: theme.spacing(6),
+		position: 'relative',
 	},
 	avatar: {
 		margin: '0 auto',
@@ -25,7 +26,10 @@ const useStyle = makeStyles((theme) => ({
 		margin: theme.spacing(3, 0, 0, 0),
 	},
 	isSubmitting: {
-		margin: theme.spacing(0, 0, 5, 0),
+		position: 'absolute',
+		top: theme.spacing(1),
+		left: 0,
+		right: 0,
 	},
 }))
 const schema = yup.object().shape({
@@ -67,6 +71,7 @@ function RegisterForm(props) {
 		}
 	}
 	const { isSubmitting } = form.formState
+
 	return (
 		<div className={classes.root}>
 			{isSubmitting && <LinearProgress className={classes.isSubmitting} />}

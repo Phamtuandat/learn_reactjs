@@ -2,7 +2,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -14,6 +13,7 @@ import { NavLink } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
+		boxSizing: 'boder-box',
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
@@ -70,14 +70,13 @@ export default function NavBar() {
 				aria-labelledby="form-dialog-title"
 				disableEscapeKeyDown
 			>
-				<DialogContent>
-					<Register />
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose} variant="outlined" color="secondary">
-						Cancel
-					</Button>
-				</DialogActions>
+				<Register handleClose={handleClose}>
+					<DialogActions>
+						<Button onClick={handleClose} variant="outlined" color="secondary">
+							Cancel
+						</Button>
+					</DialogActions>
+				</Register>
 			</Dialog>
 		</div>
 	)

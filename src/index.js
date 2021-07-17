@@ -1,3 +1,4 @@
+import { SnackbarProvider } from 'notistack'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -10,7 +11,13 @@ import * as serviceWorker from './serviceWorker'
 ReactDOM.render(
 	<Provider store={store}>
 		<BrowserRouter>
-			<App />
+			<SnackbarProvider
+				maxSnack={3}
+				autoHideDuration={3000}
+				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+			>
+				<App />
+			</SnackbarProvider>
 		</BrowserRouter>
 	</Provider>,
 	document.getElementById('root')
