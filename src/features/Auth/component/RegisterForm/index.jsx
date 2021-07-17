@@ -10,7 +10,7 @@ import * as yup from 'yup'
 
 const useStyle = makeStyles((theme) => ({
 	root: {
-		padding: theme.spacing(6),
+		padding: theme.spacing(3, 6, 3, 6),
 		position: 'relative',
 	},
 	avatar: {

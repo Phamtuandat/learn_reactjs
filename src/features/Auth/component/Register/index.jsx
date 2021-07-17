@@ -2,7 +2,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { useSnackbar } from 'notistack'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { register } from '../authSlice'
+import { register } from '../../authSlice'
 import RegisterForm from '../RegisterForm'
 
 function Register(props) {

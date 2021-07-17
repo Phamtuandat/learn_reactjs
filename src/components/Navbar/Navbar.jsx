@@ -1,3 +1,4 @@
+import { Box, Grid } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -6,9 +7,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import StorefrontRoundedIcon from '@material-ui/icons/StorefrontRounded'
-import Register from 'features/Auth/Register'
+import Login from 'features/Auth/component/Login'
+import Register from 'features/Auth/component/Register'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import CancelIcon from '@material-ui/icons/Cancel'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -25,15 +28,25 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 		color: '#fff',
 	},
+	toggleBtn: {
+		marginBottom: 18,
+	},
 }))
-
+const auth = {
+	login: 'login',
+	register: 'register',
+}
 export default function NavBar() {
 	const [open, setOpen] = useState(false)
-
-	const handleClickOpen = () => {
+	const [mode, setMode] = useState(auth.login)
+	const handleClickOpenRegister = () => {
 		setOpen(true)
+		setMode(auth.register)
 	}
-
+	const handleClickOpenLogin = () => {
+		setOpen(true)
+		setMode(auth.login)
+	}
 	const handleClose = () => {
 		setOpen(false)
 	}
@@ -58,8 +71,12 @@ export default function NavBar() {
 					<NavLink className={classes.link} to="/counter">
 						<Button color="inherit">Counter</Button>
 					</NavLink>
-					<Button color="inherit" onClick={handleClickOpen}>
+					<Button color="inherit" onClick={handleClickOpenRegister}>
 						Register
+					</Button>
+					<Grid>/</Grid>
+					<Button color="inherit" onClick={handleClickOpenLogin}>
+						Login
 					</Button>
 				</Toolbar>
 			</AppBar>
@@ -70,13 +87,40 @@ export default function NavBar() {
 				aria-labelledby="form-dialog-title"
 				disableEscapeKeyDown
 			>
-				<Register handleClose={handleClose}>
-					<DialogActions>
-						<Button onClick={handleClose} variant="outlined" color="secondary">
-							Cancel
-						</Button>
-					</DialogActions>
-				</Register>
+				<DialogActions className={classes.cancelIcon}>
+					<Button onClick={handleClose} color="secondary">
+						<CancelIcon />
+					</Button>
+				</DialogActions>
+				{mode === auth.register && (
+					<>
+						<Register handleClose={handleClose} />
+						<Box textAlign="center">
+							<Button
+								color="primary"
+								className={classes.toggleBtn}
+								textAlign="center"
+								onClick={() => setMode(auth.login)}
+							>
+								Already have an account, Login here
+							</Button>
+						</Box>
+					</>
+				)}
+				{mode === auth.login && (
+					<>
+						<Login handleClose={handleClose} />
+						<Box textAlign="center">
+							<Button
+								color="primary"
+								className={classes.toggleBtn}
+								onClick={() => setMode(auth.register)}
+							>
+								Don't have an account, register here
+							</Button>
+						</Box>
+					</>
+				)}
 			</Dialog>
 		</div>
 	)
