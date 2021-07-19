@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid, IconButton, Menu, MenuItem } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -12,24 +12,39 @@ import Register from 'features/Auth/component/Register'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import CancelIcon from '@material-ui/icons/Cancel'
+import { useDispatch, useSelector } from 'react-redux'
+import { AccountCircle } from '@material-ui/icons'
+import { logout } from 'features/Auth/authSlice'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		boxSizing: 'boder-box',
+		position: 'relatve',
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
-	title: {
-		flexGrow: 1,
-	},
+	title: {},
 	link: {
 		textDecoration: 'none',
 		color: '#fff',
+		display: 'flex',
+		flex: 1,
+		justifyContent: 'flex-start',
 	},
 	toggleBtn: {
 		marginBottom: 18,
+	},
+	handleMenu: {
+		position: 'absolute',
+		top: '64',
+		left: ' 1028',
+	},
+	linkItem: {
+		textDecoration: 'none',
+		color: '#fff',
+		display: 'flex',
 	},
 }))
 const auth = {
@@ -51,33 +66,75 @@ export default function NavBar() {
 		setOpen(false)
 	}
 	const classes = useStyles()
-
+	const loggerUser = useSelector((state) => state.userReducer.current)
+	const isLogging = !!loggerUser?.id
+	const [anchorEl, setAnchorEl] = useState(null)
+	const dispatch = useDispatch()
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget)
+	}
+	const handleCloseMenu = () => {
+		setAnchorEl(null)
+	}
+	const handleLogout = () => {
+		const action = logout()
+		dispatch(action)
+		setAnchorEl(null)
+	}
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Toolbar>
 					<NavLink className={classes.link} to="/">
 						<StorefrontRoundedIcon className={classes.menuButton} />
+						<Typography variant="h5" className={classes.title}>
+							EZ SHOP
+						</Typography>
 					</NavLink>
 
-					<Typography variant="h6" className={classes.title}>
-						<NavLink className={classes.link} to="/">
-							Hạt Shop
-						</NavLink>
-					</Typography>
-					<NavLink className={classes.link} to="/todos">
+					<NavLink className={classes.linkItem} to="/todos">
 						<Button color="inherit">Todo</Button>
 					</NavLink>
-					<NavLink className={classes.link} to="/counter">
-						<Button color="inherit">Counter</Button>
+					<NavLink className={classes.linkItem} to="/products">
+						<Button color="inherit">Products</Button>
 					</NavLink>
-					<Button color="inherit" onClick={handleClickOpenRegister}>
-						Register
-					</Button>
-					<Grid>/</Grid>
-					<Button color="inherit" onClick={handleClickOpenLogin}>
-						Login
-					</Button>
+					{!isLogging && (
+						<>
+							<Button color="inherit" onClick={handleClickOpenRegister}>
+								Register
+							</Button>
+							<Grid>/</Grid>
+							<Button color="inherit" onClick={handleClickOpenLogin}>
+								Login
+							</Button>
+						</>
+					)}
+					{!!isLogging && (
+						<>
+							<IconButton color="inherit" aria-haspopup="true" onClick={handleClick}>
+								<AccountCircle />
+							</IconButton>
+							<Menu
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'left',
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'left',
+								}}
+								getContentAnchorEl={null}
+								id="simple-menu"
+								anchorEl={anchorEl}
+								keepMounted
+								open={Boolean(anchorEl)}
+								onClose={handleCloseMenu}
+							>
+								<MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+								<MenuItem onClick={handleLogout}>Logout</MenuItem>
+							</Menu>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 
@@ -95,11 +152,10 @@ export default function NavBar() {
 				{mode === auth.register && (
 					<>
 						<Register handleClose={handleClose} />
-						<Box textAlign="center">
+						<Box textAlign="center" component="div">
 							<Button
 								color="primary"
 								className={classes.toggleBtn}
-								textAlign="center"
 								onClick={() => setMode(auth.login)}
 							>
 								Already have an account, Login here
@@ -110,7 +166,7 @@ export default function NavBar() {
 				{mode === auth.login && (
 					<>
 						<Login handleClose={handleClose} />
-						<Box textAlign="center">
+						<Box textAlign="center" component="div">
 							<Button
 								color="primary"
 								className={classes.toggleBtn}
