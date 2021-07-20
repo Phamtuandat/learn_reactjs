@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		boxSizing: 'boder-box',
-		position: 'relatve',
 	},
+
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
@@ -68,7 +68,7 @@ export default function NavBar() {
 	const classes = useStyles()
 	const loggerUser = useSelector((state) => state.userReducer.current)
 	const isLogging = !!loggerUser?.id
-	const [anchorEl, setAnchorEl] = useState(null)
+	const [anchorEl, setAnchorEl] = useState(0)
 	const dispatch = useDispatch()
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget)
@@ -81,22 +81,23 @@ export default function NavBar() {
 		dispatch(action)
 		setAnchorEl(null)
 	}
+
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Toolbar>
 					<NavLink className={classes.link} to="/">
-						<StorefrontRoundedIcon className={classes.menuButton} />
-						<Typography variant="h5" className={classes.title}>
+						<StorefrontRoundedIcon color="secondary" className={classes.menuButton} />
+						<Typography variant="h5" className={classes.title} color="secondary">
 							EZ SHOP
 						</Typography>
 					</NavLink>
 
 					<NavLink className={classes.linkItem} to="/todos">
-						<Button color="inherit">Todo</Button>
+						<Button color="default">Todo</Button>
 					</NavLink>
 					<NavLink className={classes.linkItem} to="/products">
-						<Button color="inherit">Products</Button>
+						<Button color="default">Products</Button>
 					</NavLink>
 					{!isLogging && (
 						<>

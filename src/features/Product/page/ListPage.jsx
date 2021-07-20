@@ -78,19 +78,20 @@ function ListPage(props) {
 			_sort: value,
 		}))
 	}
-	const handleFilterCategory = (categoryId) => {
+	const handleFilter = (newFilter) => {
 		setFilter((prevFilter) => ({
 			...prevFilter,
-			'category.id': categoryId,
+			...newFilter,
 		}))
 	}
+
 	return (
 		<Box>
 			<Container maxWidth="lg">
 				<Grid container spacing={1}>
 					<Grid item xs={false} md={3} sm={3}>
 						<Paper>
-							<ProductFilter categoryList={categoryList} onChange={handleFilterCategory} />
+							<ProductFilter categoryList={categoryList} onChange={handleFilter} filters={filter} />
 						</Paper>
 					</Grid>
 					<Grid item xs={12} md={9} sm={9} className={classes.right}>

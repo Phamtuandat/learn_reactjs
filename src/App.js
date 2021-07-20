@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core'
 import NavBar from 'components/Navbar/Navbar'
 import Home from 'features/Home/Component/Home'
 import NotFound from 'features/NotFound/index'
@@ -11,12 +12,14 @@ function App() {
 	return (
 		<div>
 			<NavBar />
-			<Switch>
-				<Route path="/" exact component={Home} />
-				<Route path="/todos" component={ListPage} />
-				<Route path="/products" component={ProductFeatures} />
-				<Route path="" component={NotFound} />
-			</Switch>
+			<Box>
+				<Switch>
+					<Route path="/" exact component={Home} />
+					<Route path="/todos" component={ListPage} />
+					<Route path="/products" component={ProductFeatures} />
+					<Route path="" component={NotFound} />
+				</Switch>
+			</Box>
 		</div>
 	)
 }

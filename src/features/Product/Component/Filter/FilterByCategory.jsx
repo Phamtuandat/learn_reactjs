@@ -1,29 +1,35 @@
-import React from 'react'
+import { makeStyles, Typography } from '@material-ui/core'
 import PropTypes from 'prop-types'
-import { Box, makeStyles, Typography } from '@material-ui/core'
-import { useState } from 'react'
+import React from 'react'
 
-const useStyle = makeStyles({
-	ative: {
-		fontWeight: 'bold',
+const useStyle = makeStyles((theme) => ({
+	listCategory: {
+		listStyleType: 'none',
 	},
-})
+	category: {
+		paddingTop: theme.spacing(2),
+		paddingLeft: theme.spacing(2),
+		cursor: 'pointer',
+		'&:hover': {
+			color: theme.palette.primary.dark,
+		},
+	},
+}))
 function FilterByCategory({ onChange, category }) {
 	const classes = useStyle()
-	const [catergoryID, setcatergoryID] = useState()
 	const handleChange = (categoryId) => {
-		setcatergoryID(categoryId)
 		if (onChange) onChange(categoryId)
 	}
 	return (
-		<Box>
+		<li className={classes.listCategory}>
 			<Typography
-				className={category.id === catergoryID ? classes.ative : ''}
+				variant="body2"
 				onClick={() => handleChange(category.id)}
+				className={classes.category}
 			>
 				{category.name}
 			</Typography>
-		</Box>
+		</li>
 	)
 }
 

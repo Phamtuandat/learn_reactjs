@@ -1,5 +1,5 @@
 import { Box, CardMedia, makeStyles, Typography } from '@material-ui/core'
-import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'Contant'
+import { randomPlaceholder, STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'Contant'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -23,7 +23,7 @@ function Product({ product }) {
 	const classes = useStyle()
 	const thumbnail = product.thumbnail
 		? `${STATIC_HOST}${product.thumbnail.url}`
-		: THUMBNAIL_PLACEHOLDER
+		: THUMBNAIL_PLACEHOLDER[randomPlaceholder()]
 	return (
 		<Box padding={1} className={classes.root}>
 			<Box padding={1}>
