@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import PriceFilter from '../Component/Filter/PriceFilter'
 import ProductFilter from '../Component/ProductFilter'
 import ProductList from '../Component/ProductList'
+import ShowFilters from '../Component/ShowFilters'
 import SkeletonListPage from '../Component/skeletonListPage'
 
 const useStyle = makeStyles((theme) => ({
@@ -85,6 +86,19 @@ function ListPage(props) {
 			...newFilter,
 		}))
 	}
+	const handleShowFilter = (newFilter) => {
+		if (newFilter.salePrice_lte === newFilter.salePrice_gte) {
+			delete newFilter.salePrice_lte
+			delete newFilter.salePrice_gte
+			setFilter({
+				...newFilter,
+			})
+		} else {
+			setFilter(() => ({
+				...newFilter,
+			}))
+		}
+	}
 
 	return (
 		<Box>
@@ -101,7 +115,10 @@ function ListPage(props) {
 							{isLoading ? (
 								<SkeletonListPage lenght={productsList.length} />
 							) : (
-								<ProductList products={productsList} />
+								<>
+									<ShowFilters filters={filter} onChange={handleShowFilter} />
+									<ProductList products={productsList} />
+								</>
 							)}
 							<div className={classes.pagination}>
 								<Pagination

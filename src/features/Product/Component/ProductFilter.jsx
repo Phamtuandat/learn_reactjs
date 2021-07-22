@@ -25,8 +25,19 @@ function ProductFilter({ onChange, categoryList, filters }) {
 				'category.id': categoryId,
 			})
 	}
-	const handleFilterPrice = (value) => {
+
+	const handleFilterService = (value) => {
 		if (onChange) onChange(value)
+	}
+	const handleFilterPrice = (value) => {
+		const newValue = { ...value }
+		if (newValue.salePrice_lte !== 0 && newValue.salePrice_lte > newValue.salePrice_gte) {
+			if (!newValue.salePrice_lte || (!newValue.salePrice_gte && newValue.salePrice_gte !== 0)) {
+				return
+			} else {
+				onChange(newValue)
+			}
+		}
 	}
 
 	return (
@@ -45,7 +56,7 @@ function ProductFilter({ onChange, categoryList, filters }) {
 				})}
 			</ul>
 			<FilterByPrice onChange={handleFilterPrice} />
-			<FilterByService filters={filters} onChange={handleFilterPrice} />
+			<FilterByService filters={filters} onChange={handleFilterService} />
 		</Box>
 	)
 }

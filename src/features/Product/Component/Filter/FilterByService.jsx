@@ -41,7 +41,7 @@ function FilterByService({ onChange, filters = {} }) {
 									<Checkbox
 										name={x.value}
 										onChange={handleChange}
-										checked={filters[x.value]}
+										checked={filters[x.value] ? true : false}
 										className={classes.filter}
 										color="primary"
 										size="small"

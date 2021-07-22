@@ -32,7 +32,13 @@ function FilterByPrice({ onChange }) {
 		}))
 	}
 	const handleSubmit = () => {
-		if (onChange) onChange(values)
+		if (onChange) {
+			onChange(values)
+			setvalues({
+				salePrice_gte: 0,
+				salePrice_lte: 0,
+			})
+		}
 	}
 	return (
 		<Box className={classes.root}>
