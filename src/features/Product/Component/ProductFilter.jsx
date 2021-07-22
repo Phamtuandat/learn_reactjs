@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Box, makeStyles, Typography } from '@material-ui/core'
 import FilterByCategory from './Filter/FilterByCategory'
 import FilterByPrice from './Filter/FilterByPrice'
+import FilterByService from './Filter/FilterByService'
 
 const useStyle = makeStyles((theme) => ({
 	title: {
@@ -44,6 +45,7 @@ function ProductFilter({ onChange, categoryList, filters }) {
 				})}
 			</ul>
 			<FilterByPrice onChange={handleFilterPrice} />
+			<FilterByService filters={filters} onChange={handleFilterPrice} />
 		</Box>
 	)
 }

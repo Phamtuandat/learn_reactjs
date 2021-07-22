@@ -37,6 +37,7 @@ function ListPage(props) {
 
 	useEffect(() => {
 		try {
+			setIsloading(true)
 			;(async () => {
 				const resp = await productApi.getAll(filter)
 				setProductsList(resp.data)

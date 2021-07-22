@@ -88,16 +88,16 @@ export default function NavBar() {
 				<Toolbar>
 					<NavLink className={classes.link} to="/">
 						<StorefrontRoundedIcon color="secondary" className={classes.menuButton} />
-						<Typography variant="h5" className={classes.title} color="secondary">
+						<Typography variant="h5" className={classes.title} color="inherit">
 							EZ SHOP
 						</Typography>
 					</NavLink>
 
 					<NavLink className={classes.linkItem} to="/todos">
-						<Button color="default">Todo</Button>
+						<Button color="inherit">Todo</Button>
 					</NavLink>
 					<NavLink className={classes.linkItem} to="/products">
-						<Button color="default">Products</Button>
+						<Button color="inherit">Products</Button>
 					</NavLink>
 					{!isLogging && (
 						<>
