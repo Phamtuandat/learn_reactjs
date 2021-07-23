@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-expressions */
-import React from 'react'
-import PropTypes from 'prop-types'
 import { Box, Chip } from '@material-ui/core'
-
+import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { useMemo } from 'react'
 const FILTER_LIST = [
 	{
 		id: 1,
@@ -14,7 +15,7 @@ const FILTER_LIST = [
 		onToggle: (filters) => {
 			const newFilter = { ...filters }
 			if (newFilter.isPromotion) {
-				newFilter.isPromotion = false
+				delete newFilter.isPromotion
 			} else {
 				newFilter.isPromotion = true
 			}
@@ -45,8 +46,8 @@ const FILTER_LIST = [
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
-			newFilter.salePrice_gte = 0
-			newFilter.salePrice_lte = 0
+			delete newFilter.salePrice_gte
+			delete newFilter.salePrice_lte
 			return newFilter
 		},
 		onToggle: (filters) => null,
@@ -136,12 +137,27 @@ const FILTER_LIST = [
 		onToggle: (filters) => null,
 	},
 ]
+const useStyle = makeStyles((theme) => ({
+	root: {
+		padding: 0,
+		margin: 0,
+		display: 'flex',
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(1),
+	},
+	filter: {
+		listStyleType: 'none',
+		paddingLeft: theme.spacing(1),
+	},
+}))
 function ShowFilters({ onChange = null, filters = {} }) {
+	const visibleFilters = useMemo(() => FILTER_LIST.filter((x) => x.isVisible(filters)), [filters])
+	const classes = useStyle()
 	return (
-		<Box component="ul">
-			{FILTER_LIST.filter((x) => x.isVisible(filters)).map((x) => {
+		<Box component="ul" className={classes.root}>
+			{visibleFilters.map((x) => {
 				return (
-					<li key={x.id}>
+					<li key={x.id} className={classes.filter}>
 						<Chip
 							label={x.getLabel(filters)}
 							color={x.isActive(filters) ? 'primary' : 'default'}

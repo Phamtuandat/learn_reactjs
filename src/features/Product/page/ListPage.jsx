@@ -3,12 +3,14 @@ import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 import categoryApi from 'api/categoryAPI'
 import productApi from 'api/productAPI'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import PriceFilter from '../Component/Filter/PriceFilter'
 import ProductFilter from '../Component/ProductFilter'
 import ProductList from '../Component/ProductList'
 import ShowFilters from '../Component/ShowFilters'
 import SkeletonListPage from '../Component/skeletonListPage'
+import queryString from 'query-string'
 
 const useStyle = makeStyles((theme) => ({
 	root: {},
@@ -22,6 +24,22 @@ const useStyle = makeStyles((theme) => ({
 }))
 function ListPage(props) {
 	const classes = useStyle()
+
+	const history = useHistory()
+	const location = useLocation()
+	const queryParam = useMemo(() => {
+		const params = queryString.parse(location.search)
+		return {
+			...params,
+			_sort: params._sort || 'salePrice:ASC',
+			_limit: +params._limit || 12,
+			_page: +params._page || 1,
+			isFreeShip: params.isFreeShip === 'true' ? true : null,
+			isPromotion: params.isPromotion === 'true' ? true : null,
+			'category.id': +params['category.id'],
+		}
+	}, [location.search])
+
 	const [productsList, setProductsList] = useState([])
 	const [isLoading, setIsloading] = useState(true)
 	const [categoryList, setCategoryList] = useState([])
@@ -30,17 +48,25 @@ function ListPage(props) {
 		page: 1,
 	})
 
-	const [filter, setFilter] = useState({
-		_limit: 12,
-		_page: 1,
-		_sort: 'salePrice:ASC',
-	})
+	// const [filter, setFilter] = useState(() => ({
+	// 	...queryParam,
+	// 	_sort: queryParam._sort || 'salePrice:ASC',
+	// 	_limit: +queryParam._limit || 12,
+	// 	_page: +queryParam._page || 1,
+	// }))
 
+	// useEffect(() => {
+	// 	// sync push filter to url
+	// 	history.push({
+	// 		pathname: history.location.pathname,
+	// 		search: queryString.stringify(queryParam),
+	// 	})
+	// }, [queryParam, history])
 	useEffect(() => {
 		try {
 			setIsloading(true)
 			;(async () => {
-				const resp = await productApi.getAll(filter)
+				const resp = await productApi.getAll(queryParam)
 				setProductsList(resp.data)
 				const total = resp.pagination.total.data
 				const page = resp.pagination.page
@@ -57,7 +83,7 @@ function ListPage(props) {
 			setIsloading(false)
 		}, 1000)
 		return () => clearTimeout()
-	}, [filter])
+	}, [queryParam])
 	useEffect(() => {
 		try {
 			;(async () => {
@@ -69,35 +95,40 @@ function ListPage(props) {
 		}
 	}, [])
 	const handleChanePage = (e, page) => {
-		setFilter((prevFilter) => ({
-			...prevFilter,
+		const filter = {
+			...queryParam,
 			_page: page,
-		}))
+		}
+		history.push({
+			pathname: history.location.pathname,
+			search: queryString.stringify(filter),
+		})
 	}
 	const handleChange = (value) => {
-		setFilter((prevFilter) => ({
-			...prevFilter,
+		const filter = {
+			...queryParam,
 			_sort: value,
-		}))
-	}
-	const handleFilter = (newFilter) => {
-		setFilter((prevFilter) => ({
-			...prevFilter,
-			...newFilter,
-		}))
-	}
-	const handleShowFilter = (newFilter) => {
-		if (newFilter.salePrice_lte === newFilter.salePrice_gte) {
-			delete newFilter.salePrice_lte
-			delete newFilter.salePrice_gte
-			setFilter({
-				...newFilter,
-			})
-		} else {
-			setFilter(() => ({
-				...newFilter,
-			}))
 		}
+		history.push({
+			pathname: history.location.pathname,
+			search: queryString.stringify(filter),
+		})
+	}
+	const handleFilter = (filter) => {
+		const newFilter = {
+			...queryParam,
+			...filter,
+		}
+		history.push({
+			pathname: history.location.pathname,
+			search: queryString.stringify(newFilter),
+		})
+	}
+	const handleShowFilter = (filter) => {
+		history.push({
+			pathname: history.location.pathname,
+			search: queryString.stringify(filter),
+		})
 	}
 
 	return (
@@ -106,24 +137,28 @@ function ListPage(props) {
 				<Grid container spacing={1}>
 					<Grid item xs={false} md={3} sm={3}>
 						<Paper>
-							<ProductFilter categoryList={categoryList} onChange={handleFilter} filters={filter} />
+							<ProductFilter
+								categoryList={categoryList}
+								onChange={handleFilter}
+								filters={queryParam}
+							/>
 						</Paper>
 					</Grid>
 					<Grid item xs={12} md={9} sm={9} className={classes.right}>
 						<Paper>
-							<PriceFilter onChange={handleChange} currentFilter={filter._sort} />
+							<PriceFilter onChange={handleChange} currentFilter={queryParam._sort} />
 							{isLoading ? (
 								<SkeletonListPage lenght={productsList.length} />
 							) : (
 								<>
-									<ShowFilters filters={filter} onChange={handleShowFilter} />
+									<ShowFilters filters={queryParam} onChange={handleShowFilter} />
 									<ProductList products={productsList} />
 								</>
 							)}
 							<div className={classes.pagination}>
 								<Pagination
 									onChange={handleChanePage}
-									count={Math.ceil(pagination.total / filter._limit)}
+									count={Math.ceil(pagination.total / queryParam._limit)}
 									page={pagination.page}
 								/>
 							</div>

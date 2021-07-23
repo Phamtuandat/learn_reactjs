@@ -14,8 +14,8 @@ function PriceFilter({ onChange, currentFilter }) {
 			onChange={handleChange}
 			aria-label="disabled tabs example"
 		>
-			<Tab label="Giá từ cao tới thấp" value="salePrice:ASC" />
-			<Tab label="Giá từ thấp tới cao" value="salePrice:DESC" />
+			<Tab label="Giá từ thấp tới cao" value="salePrice:ASC" />
+			<Tab label="Giá từ cao tới thấp" value="salePrice:DESC" />
 		</Tabs>
 	)
 }
