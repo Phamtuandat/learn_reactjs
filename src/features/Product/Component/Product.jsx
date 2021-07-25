@@ -1,7 +1,8 @@
 import { Box, CardMedia, makeStyles, Typography } from '@material-ui/core'
-import { randomPlaceholder, STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'Contant'
+import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'Contant'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
 const useStyle = makeStyles((theme) => ({
 	root: {
@@ -17,15 +18,21 @@ const useStyle = makeStyles((theme) => ({
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
 	},
-	cardMedia: {},
+	cardMedia: {
+		marginTop: theme.spacing(1),
+	},
 }))
 function Product({ product }) {
+	const history = useHistory()
 	const classes = useStyle()
 	const thumbnail = product.thumbnail
 		? `${STATIC_HOST}${product.thumbnail.url}`
-		: THUMBNAIL_PLACEHOLDER[randomPlaceholder()]
+		: THUMBNAIL_PLACEHOLDER
+	const handleClick = () => {
+		history.push(`/products/${product.id}`)
+	}
 	return (
-		<Box padding={1} className={classes.root}>
+		<Box padding={1} className={classes.root} onClick={handleClick}>
 			<Box padding={1}>
 				<CardMedia
 					component="img"

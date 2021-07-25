@@ -18,7 +18,10 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.10.1",
+    "react-image-magnify": "^2.7.4",
+    "react-magnifier": "^3.0.4",
     "react-redux": "^7.2.4",
+    "react-responsive-carousel": "^3.2.20",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-toastify": "^7.0.4",
@@ -46,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-image-magnify": "^2.7.1"
   }
 }

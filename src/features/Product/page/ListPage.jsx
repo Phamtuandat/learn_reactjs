@@ -36,7 +36,7 @@ function ListPage(props) {
 			_page: +params._page || 1,
 			isFreeShip: params.isFreeShip === 'true' ? true : null,
 			isPromotion: params.isPromotion === 'true' ? true : null,
-			'category.id': +params['category.id'],
+			'category.id': +params['category.id'] || null,
 		}
 	}, [location.search])
 

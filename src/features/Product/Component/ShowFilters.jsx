@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { Box, Chip } from '@material-ui/core'
+import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -149,6 +150,9 @@ const useStyle = makeStyles((theme) => ({
 		listStyleType: 'none',
 		paddingLeft: theme.spacing(1),
 	},
+	active: {
+		backgroundColor: blue[500],
+	},
 }))
 function ShowFilters({ onChange = null, filters = {} }) {
 	const visibleFilters = useMemo(() => FILTER_LIST.filter((x) => x.isVisible(filters)), [filters])
@@ -160,6 +164,7 @@ function ShowFilters({ onChange = null, filters = {} }) {
 					<li key={x.id} className={classes.filter}>
 						<Chip
 							label={x.getLabel(filters)}
+							className={x.isActive(filters) ? classes.active : ''}
 							color={x.isActive(filters) ? 'primary' : 'default'}
 							clickable={!x.isRemovalble}
 							onClick={
