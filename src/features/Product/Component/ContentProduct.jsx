@@ -8,9 +8,7 @@ import React from 'react'
 const useStyles = makeStyles((theme) => ({
 	root: {
 		minWidth: 275,
-		height: '100%',
-		padding: theme.spacing(4),
-		borderLeft: '1px solid #ccc',
+		padding: theme.spacing(2),
 		boxSizing: 'border-box',
 	},
 	bullet: {
@@ -41,8 +39,7 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: theme.spacing(2),
 	},
 	shortDescription: {
-		letterSpacing: '2px',
-		marginBottom: theme.spacing(3),
+		marginBottom: theme.spacing(6),
 		color: theme.palette.grey[900],
 	},
 	name: {
@@ -53,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 function ContentProduct({ product }) {
 	const classes = useStyles()
 	const { originalPrice, promotionPercent, salePrice, shortDescription, name } = product
-	console.log(product)
 	return (
 		<Box className={classes.root}>
 			<Typography variant="h4" color="textPrimary" className={classes.name}>
@@ -67,7 +63,7 @@ function ContentProduct({ product }) {
 				<Box component="span" color="textPrimary" className={classes.salePrice}>
 					{new Intl.NumberFormat({ style: 'currency', currency: 'VND' }).format(salePrice)}đ
 				</Box>
-				<Box component="span" color="textPrimary" className={classes.originalPrice}>
+				<Box component="span" color="textSecondary" className={classes.originalPrice}>
 					{new Intl.NumberFormat({ style: 'currency', currency: 'VND' }).format(originalPrice)}đ
 				</Box>
 				<Box component="span" color="textPrimary" className={classes.promotionPercent}>

@@ -10,12 +10,13 @@ export default function ProductIdHook(productId) {
 			try {
 				const result = await productApi.get(productId)
 				setProduct(result.data)
-				setIsloading(false)
 			} catch {
-				setIsloading(false)
 				console.log('error')
 			}
 		})()
+		setTimeout(() => setIsloading(false), 1000)
+
+		return clearTimeout()
 	}, [productId])
 	return { product, isLoading }
 }
