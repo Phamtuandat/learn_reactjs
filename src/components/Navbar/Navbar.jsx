@@ -1,4 +1,4 @@
-import { Box, Grid, IconButton, Menu, MenuItem } from '@material-ui/core'
+import { Badge, Box, Grid, IconButton, Menu, MenuItem } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -14,7 +14,9 @@ import { NavLink } from 'react-router-dom'
 import CancelIcon from '@material-ui/icons/Cancel'
 import { useDispatch, useSelector } from 'react-redux'
 import { AccountCircle } from '@material-ui/icons'
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 import { logout } from 'features/Auth/authSlice'
+import { countItems } from 'features/Cart/CartSelector'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -81,7 +83,7 @@ export default function NavBar() {
 		dispatch(action)
 		setAnchorEl(null)
 	}
-
+	const count = useSelector(countItems)
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
@@ -93,12 +95,10 @@ export default function NavBar() {
 						</Typography>
 					</NavLink>
 
-					<NavLink className={classes.linkItem} to="/todos">
-						<Button color="inherit">Todo</Button>
-					</NavLink>
 					<NavLink className={classes.linkItem} to="/products">
 						<Button color="inherit">Products</Button>
 					</NavLink>
+
 					{!isLogging && (
 						<>
 							<Button color="inherit" onClick={handleClickOpenRegister}>
@@ -136,6 +136,11 @@ export default function NavBar() {
 							</Menu>
 						</>
 					)}
+					<IconButton aria-label="show 11 new notifications" color="inherit">
+						<Badge badgeContent={count} color="secondary">
+							<ShoppingCartOutlinedIcon />
+						</Badge>
+					</IconButton>
 				</Toolbar>
 			</AppBar>
 

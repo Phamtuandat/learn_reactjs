@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 		.min(1, 'Mininum value is 1')
 		.typeError('Please insert quantity'),
 })
-function Quantity(props) {
+function Quantity({ onSubmit }) {
 	const classes = useStyle()
 	const form = useForm({
 		defaultValues: {
@@ -27,7 +27,7 @@ function Quantity(props) {
 		resolver: yupResolver(schema),
 	})
 	const handleSubmit = (values) => {
-		console.log(values)
+		onSubmit(values)
 	}
 
 	return (
@@ -39,7 +39,12 @@ function Quantity(props) {
 			>
 				<QuantityField form={form} name="Quantity" />
 
-				<Button variant="contained" color="primary" className={classes.registerBtn} type="submit">
+				<Button
+					variant="contained"
+					color="primary"
+					className={classes.registerBtn}
+					type="submit"
+				>
 					Mua Hàng
 				</Button>
 			</form>
