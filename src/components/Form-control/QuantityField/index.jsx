@@ -1,23 +1,34 @@
-import { Box, IconButton, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Box, IconButton, makeStyles, TextField } from '@material-ui/core'
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import RemoveIcon from '@material-ui/icons/Remove'
 import PropTypes from 'prop-types'
 import React from 'react'
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import { Controller } from 'react-hook-form'
 
 const useStyle = makeStyles((theme) => ({
 	increaseBtn: {
 		borderRadius: 0,
 		border: '1px solid #ccc',
-		width: 42.3,
-		height: 42.3,
+		width: 27,
+		height: 27,
 	},
 	inputQuantityField: {
-		width: 70,
 		textAlign: 'center',
+		'& > div ': {
+			width: 50,
+			height: 27,
+		},
+		'& > div > input': {
+			padding: 0,
+			textAlign: 'center',
+		},
 	},
 	root: {
 		margin: theme.spacing(2, 0, 2, 0),
+	},
+	formBox: {
+		display: 'flex',
+		width: '100%',
 	},
 }))
 function QuantityField({ form, name }) {
@@ -28,15 +39,11 @@ function QuantityField({ form, name }) {
 	const classes = useStyle()
 	return (
 		<Box className={classes.root}>
-			<Typography variant="button" display="block">
-				Số lượng:
-			</Typography>
-
 			<Controller
 				name={name}
 				control={form.control}
 				render={({ field }) => (
-					<Box>
+					<Box className={classes.formBox}>
 						<IconButton
 							onClick={() => setValue(name, +field.value ? +field.value - 1 : 1)}
 							className={classes.increaseBtn}
@@ -51,7 +58,6 @@ function QuantityField({ form, name }) {
 							{...field}
 							variant="outlined"
 							color="primary"
-							type="number"
 							size="small"
 							className={classes.inputQuantityField}
 						></TextField>

@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, makeStyles, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import QuantityField from 'components/Form-control/QuantityField'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -18,41 +18,27 @@ const schema = yup.object().shape({
 		.min(1, 'Mininum value is 1')
 		.typeError('Please insert quantity'),
 })
-function Quantity({ onSubmit }) {
+function CartQuantity({ quantity = 0, onChange = null }) {
 	const classes = useStyle()
 	const form = useForm({
 		defaultValues: {
-			Quantity: 1,
+			Quantity: quantity,
 		},
 		resolver: yupResolver(schema),
 	})
-	const handleSubmit = (values) => {
-		onSubmit(values)
-	}
+	const { watch } = form
+	const watchQuantityChanges = watch('Quantity')
 
+	useEffect(() => {
+		onChange(watchQuantityChanges)
+	}, [watchQuantityChanges, onChange])
 	return (
 		<div className={classes.root}>
-			<Typography variant="button" display="block">
-				Số lượng:
-			</Typography>
-			<form
-				onSubmit={form.handleSubmit(handleSubmit)}
-				className={classes.inputQuantityField}
-				noValidate
-			>
+			<form className={classes.inputQuantityField} noValidate>
 				<QuantityField form={form} name="Quantity" />
-
-				<Button
-					variant="contained"
-					color="primary"
-					className={classes.registerBtn}
-					type="submit"
-				>
-					Mua Hàng
-				</Button>
 			</form>
 		</div>
 	)
 }
 
-export default Quantity
+export default CartQuantity

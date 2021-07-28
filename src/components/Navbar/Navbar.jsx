@@ -6,17 +6,17 @@ import DialogActions from '@material-ui/core/DialogActions'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
+import { AccountCircle } from '@material-ui/icons'
+import CancelIcon from '@material-ui/icons/Cancel'
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 import StorefrontRoundedIcon from '@material-ui/icons/StorefrontRounded'
+import { logout } from 'features/Auth/authSlice'
 import Login from 'features/Auth/component/Login'
 import Register from 'features/Auth/component/Register'
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import CancelIcon from '@material-ui/icons/Cancel'
-import { useDispatch, useSelector } from 'react-redux'
-import { AccountCircle } from '@material-ui/icons'
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
-import { logout } from 'features/Auth/authSlice'
 import { countItems } from 'features/Cart/CartSelector'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 		color: '#fff',
 		display: 'flex',
+	},
+	cartLink: {
+		color: '#fff',
 	},
 }))
 const auth = {
@@ -138,7 +141,9 @@ export default function NavBar() {
 					)}
 					<IconButton aria-label="show 11 new notifications" color="inherit">
 						<Badge badgeContent={count} color="secondary">
-							<ShoppingCartOutlinedIcon />
+							<NavLink to="/cart" className={classes.cartLink}>
+								<ShoppingCartOutlinedIcon />
+							</NavLink>
 						</Badge>
 					</IconButton>
 				</Toolbar>
