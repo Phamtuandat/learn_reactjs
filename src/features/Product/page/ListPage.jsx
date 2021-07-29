@@ -16,6 +16,7 @@ const useStyle = makeStyles((theme) => ({
 	root: {},
 	right: {},
 	pagination: {
+		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
 		marginTop: theme.spacing(6),
@@ -47,21 +48,6 @@ function ListPage(props) {
 		total: 12,
 		page: 1,
 	})
-
-	// const [filter, setFilter] = useState(() => ({
-	// 	...queryParam,
-	// 	_sort: queryParam._sort || 'salePrice:ASC',
-	// 	_limit: +queryParam._limit || 12,
-	// 	_page: +queryParam._page || 1,
-	// }))
-
-	// useEffect(() => {
-	// 	// sync push filter to url
-	// 	history.push({
-	// 		pathname: history.location.pathname,
-	// 		search: queryString.stringify(queryParam),
-	// 	})
-	// }, [queryParam, history])
 	useEffect(() => {
 		try {
 			setIsloading(true)

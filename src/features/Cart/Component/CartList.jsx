@@ -90,7 +90,7 @@ function CartList({ cartItem = [] }) {
 							</Box>
 						</Grid>
 						<Grid item lg={2} md={1} xs={3} className={classes.removeBox}>
-							<IconButton onClick={handleDelete} color="secondary" size="small">
+							<IconButton onClick={handleDelete} color="default" size="small">
 								<DeleteOutlinedIcon className={classes.removeBtn} />
 							</IconButton>
 						</Grid>

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 		color: grey[600],
 	},
 	content: {
-		width: 60,
+		width: 100,
 		marginRight: theme.spacing(2),
 	},
 	root: {

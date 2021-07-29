@@ -1,4 +1,5 @@
 import { Box } from '@material-ui/core'
+import Footer from 'components/Footer'
 import NavBar from 'components/Navbar/Navbar'
 import CartFeatures from 'features/Cart'
 import Home from 'features/Home/Component/Home'
@@ -20,6 +21,7 @@ function App() {
 					<Route path="" component={NotFound} />
 				</Switch>
 			</Box>
+			<Footer />
 		</div>
 	)
 }

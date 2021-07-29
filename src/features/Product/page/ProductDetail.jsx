@@ -14,12 +14,19 @@ import { useDispatch } from 'react-redux'
 import { addToCart } from 'features/Cart/CartSlice'
 
 const useStyle = makeStyles((theme) => ({
+	root: {
+		minHeight: theme.spacing(110),
+	},
 	detailsContent: {
 		borderLeft: '1px solid #ddd',
 		padding: theme.spacing(2),
 	},
 	Thumbnail: {
 		padding: theme.spacing(2),
+	},
+	progress: {
+		position: 'relative',
+		top: -32,
 	},
 }))
 function ProductDetail(props) {
@@ -39,9 +46,9 @@ function ProductDetail(props) {
 	const classes = useStyle()
 
 	return (
-		<>
+		<div className={classes.root}>
 			{isLoading ? (
-				<LinearProgress />
+				<LinearProgress className={classes.progress} />
 			) : (
 				<Container>
 					<Paper elevation={0}>
@@ -74,7 +81,7 @@ function ProductDetail(props) {
 					</Paper>
 				</Container>
 			)}
-		</>
+		</div>
 	)
 }
 
