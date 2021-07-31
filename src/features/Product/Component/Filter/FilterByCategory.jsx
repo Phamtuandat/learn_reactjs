@@ -1,10 +1,15 @@
-import { makeStyles, Typography } from '@material-ui/core'
+import { IconButton, makeStyles, Typography } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import React from 'react'
 
 const useStyle = makeStyles((theme) => ({
 	listCategory: {
 		listStyleType: 'none',
+		display: 'flex',
+		[theme.breakpoints.down('xs')]: {
+			width: '30%',
+			flexDirection: 'column',
+		},
 	},
 	category: {
 		paddingTop: theme.spacing(2),
@@ -15,18 +20,15 @@ const useStyle = makeStyles((theme) => ({
 		},
 	},
 }))
-function FilterByCategory({ onChange, category }) {
+function FilterByCategory({ onChange, category, icon }) {
 	const classes = useStyle()
 	const handleChange = (categoryId) => {
 		if (onChange) onChange(categoryId)
 	}
 	return (
-		<li className={classes.listCategory}>
-			<Typography
-				variant="body2"
-				onClick={() => handleChange(category.id)}
-				className={classes.category}
-			>
+		<li className={classes.listCategory} onClick={() => handleChange(category.id)}>
+			<IconButton>{icon[0].component}</IconButton>
+			<Typography variant="body2" className={classes.category}>
 				{category.name}
 			</Typography>
 		</li>

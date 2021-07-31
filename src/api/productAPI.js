@@ -5,21 +5,35 @@ const productApi = {
 	async getAll(params) {
 		const url = products
 		const newParams = { ...params }
-		newParams._start =
-			!newParams._page || newParams._page <= 1 ? 0 : (newParams._page - 1) * newParams._limit || 50
+		if (!newParams._start) {
+			newParams._start =
+				!newParams._page || newParams._page <= 1
+					? 0
+					: (newParams._page - 1) * newParams._limit || 12
+			delete newParams._page
+			const productsList = await axiosClient.get(url, { params: newParams })
+			const count = await axiosClient.get(`${url}/count`, { params: newParams })
 
-		delete newParams._page
-
-		const productsList = await axiosClient.get(url, { params: newParams })
-		const count = await axiosClient.get(`${url}/count`, { params: newParams })
-
-		return {
-			data: productsList.data,
-			pagination: {
-				page: params._page,
-				limit: params._limit,
-				total: count,
-			},
+			return {
+				data: productsList.data,
+				pagination: {
+					page: params._page,
+					limit: params._limit,
+					total: count,
+				},
+			}
+		} else {
+			delete newParams._page
+			const productsList = await axiosClient.get(url, { params: newParams })
+			const count = await axiosClient.get(`${url}/count`, { params: newParams })
+			return {
+				data: productsList.data,
+				pagination: {
+					page: params._page,
+					limit: params._limit,
+					total: count,
+				},
+			}
 		}
 	},
 	get(id) {

@@ -1,22 +1,36 @@
-import { Badge, Box, Grid, IconButton, Menu, MenuItem } from '@material-ui/core'
+import {
+	Badge,
+	Box,
+	Drawer,
+	Hidden,
+	IconButton,
+	Link,
+	Menu,
+	MenuItem,
+	withWidth,
+} from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import { AccountCircle } from '@material-ui/icons'
 import CancelIcon from '@material-ui/icons/Cancel'
+import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 import StorefrontRoundedIcon from '@material-ui/icons/StorefrontRounded'
+import categoryApi from 'api/categoryAPI'
 import { logout } from 'features/Auth/authSlice'
 import Login from 'features/Auth/component/Login'
 import Register from 'features/Auth/component/Register'
 import { countItems } from 'features/Cart/CartSelector'
-import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import queryString from 'query-string'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory, useLocation } from 'react-router-dom'
+import ReponsiveAppBar from './ReponsiveAppBar'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,12 +41,19 @@ const useStyles = makeStyles((theme) => ({
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
-	title: {},
+	title: {
+		alignSelf: 'center',
+		color: 'white',
+		fontSize: 26,
+		'&:hover': {
+			textDecoration: 'none',
+			opacity: 0.85,
+		},
+	},
 	link: {
 		textDecoration: 'none',
 		color: '#fff',
 		display: 'flex',
-		flex: 1,
 		justifyContent: 'flex-start',
 	},
 	toggleBtn: {
@@ -51,139 +72,255 @@ const useStyles = makeStyles((theme) => ({
 	cartLink: {
 		color: '#fff',
 	},
+	home: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+	logo: {
+		display: 'flex',
+	},
+	userBox: {
+		display: 'flex',
+	},
+	shopIcon: {
+		alignSelf: 'center',
+		fontSize: '32px',
+		marginRight: 20,
+	},
 }))
 const auth = {
 	login: 'login',
 	register: 'register',
 }
-export default function NavBar() {
-	const [open, setOpen] = useState(false)
-	const [mode, setMode] = useState(auth.login)
-	const handleClickOpenRegister = () => {
-		setOpen(true)
-		setMode(auth.register)
-	}
-	const handleClickOpenLogin = () => {
-		setOpen(true)
-		setMode(auth.login)
-	}
-	const handleClose = () => {
-		setOpen(false)
-	}
+function NavBar() {
 	const classes = useStyles()
+	const categoryId = useSelector((state) => state.categoryId.categoryId)
+
+	const history = useHistory()
+	const location = useLocation()
+	const queryParam = useMemo(() => {
+		const params = queryString.parse(location.search)
+		return {
+			...params,
+			'category.id': params['category.id'] || null,
+			_sort: params._sort || 'salePrice:ASC',
+			_limit: +params._limit || 12,
+			_page: +params._page || 1,
+			isFreeShip: params.isFreeShip === 'true' ? true : null,
+			isPromotion: params.isPromotion === 'true' ? true : null,
+		}
+	}, [location.search])
+
+	const [state, setState] = useState({
+		openNav: false,
+		open: false,
+		mode: auth.login,
+		anchorEl: 0,
+	})
+	const handleOpen = (value) => {
+		setState((prevState) => ({
+			...prevState,
+			...value,
+		}))
+	}
+
+	const [categoryList, setCategoryList] = useState()
+	useEffect(() => {
+		;(async () => {
+			const resp = await categoryApi.getAll()
+			const categoryList = resp.data
+			setCategoryList(categoryList)
+		})()
+	}, [])
 	const loggerUser = useSelector((state) => state.userReducer.current)
 	const isLogging = !!loggerUser?.id
-	const [anchorEl, setAnchorEl] = useState(0)
 	const dispatch = useDispatch()
 	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget)
+		handleOpen({
+			anchorEl: event.currentTarget,
+		})
 	}
 	const handleCloseMenu = () => {
-		setAnchorEl(null)
+		handleOpen({
+			anchorEl: false,
+		})
 	}
 	const handleLogout = () => {
 		const action = logout()
 		dispatch(action)
-		setAnchorEl(null)
+		handleCloseMenu()
+	}
+	useEffect(() => {
+		if (categoryId == null) return
+		const filter = {
+			...queryParam,
+			'category.id': categoryId !== null ? categoryId : null,
+		}
+		history.push({
+			pathname: history.location.pathname,
+			search: queryString.stringify(filter),
+		})
+	}, [categoryId, history, queryParam])
+	const toggleDrawer = () => (event) => {
+		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+			return
+		}
+
+		handleOpen({ openNav: false })
 	}
 	const count = useSelector(countItems)
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
-				<Toolbar>
-					<NavLink className={classes.link} to="/">
-						<StorefrontRoundedIcon color="secondary" className={classes.menuButton} />
-						<Typography variant="h5" className={classes.title} color="inherit">
+				<Toolbar className={classes.home}>
+					<Box className={classes.logo}>
+						<NavLink className={classes.link} to="/products">
+							<Hidden mdUp>
+								<IconButton onClick={() => handleOpen({ openNav: true })}>
+									<MenuIcon />
+								</IconButton>
+							</Hidden>
+							<Hidden only={['xs']}>
+								<StorefrontRoundedIcon className={classes.shopIcon} />
+							</Hidden>
+						</NavLink>
+						<Link component={NavLink} to="/products" className={classes.title}>
 							EZ SHOP
-						</Typography>
-					</NavLink>
-
-					<NavLink className={classes.linkItem} to="/products">
-						<Button color="inherit">Products</Button>
-					</NavLink>
-
-					{!isLogging && (
-						<>
-							<Button color="inherit" onClick={handleClickOpenRegister}>
-								Register
-							</Button>
-							<Grid>/</Grid>
-							<Button color="inherit" onClick={handleClickOpenLogin}>
-								Login
-							</Button>
-						</>
-					)}
-					{!!isLogging && (
-						<>
-							<IconButton color="inherit" aria-haspopup="true" onClick={handleClick}>
-								<AccountCircle />
-							</IconButton>
-							<Menu
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'left',
-								}}
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'left',
-								}}
-								getContentAnchorEl={null}
-								id="simple-menu"
-								anchorEl={anchorEl}
-								keepMounted
-								open={Boolean(anchorEl)}
-								onClose={handleCloseMenu}
-							>
-								<MenuItem onClick={handleCloseMenu}>My account</MenuItem>
-								<MenuItem onClick={handleLogout}>Logout</MenuItem>
-							</Menu>
-						</>
-					)}
-					<IconButton aria-label="show 11 new notifications" color="inherit">
-						<Badge badgeContent={count} color="secondary">
-							<NavLink to="/cart" className={classes.cartLink}>
-								<ShoppingCartOutlinedIcon />
-							</NavLink>
-						</Badge>
-					</IconButton>
+						</Link>
+					</Box>
+					<Box className={classes.userBox}>
+						{!isLogging && (
+							<Hidden only={['xs']}>
+								<Button
+									color="inherit"
+									onClick={() =>
+										handleOpen({
+											open: true,
+											mode: auth.register,
+										})
+									}
+								>
+									Đăng ký
+								</Button>
+								<Box component="span" alignSelf="center">
+									/
+								</Box>
+								<Button
+									color="inherit"
+									onClick={() =>
+										handleOpen({
+											open: true,
+											mode: auth.login,
+										})
+									}
+								>
+									Đăng nhập
+								</Button>
+							</Hidden>
+						)}
+						{!!isLogging && (
+							<Hidden xsDown>
+								<IconButton
+									color="inherit"
+									aria-haspopup="true"
+									onClick={handleClick}
+								>
+									<AccountCircle />
+								</IconButton>
+								<Menu
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'left',
+									}}
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'left',
+									}}
+									getContentAnchorEl={null}
+									id="simple-menu"
+									anchorEl={state.anchorEl}
+									keepMounted
+									open={Boolean(state.anchorEl)}
+									onClose={handleCloseMenu}
+								>
+									<MenuItem onClick={handleCloseMenu}>Tài khoản của tôi</MenuItem>
+									<MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+								</Menu>
+							</Hidden>
+						)}
+						<IconButton aria-label="show 11 new notifications" color="inherit">
+							<Badge badgeContent={count} color="secondary">
+								<NavLink to="/cart" className={classes.cartLink}>
+									<ShoppingCartOutlinedIcon />
+								</NavLink>
+							</Badge>
+						</IconButton>
+					</Box>
 				</Toolbar>
 			</AppBar>
 
+			<Drawer open={state.openNav} onClose={toggleDrawer(false)}>
+				<ReponsiveAppBar
+					handleClick={handleOpen}
+					isLogging={isLogging}
+					handleLogout={handleLogout}
+					categoryList={categoryList}
+				/>
+			</Drawer>
+
 			<Dialog
-				open={open}
-				onClose={handleClose}
+				fullScreen={['xs', 'sm'] && true}
+				open={state.open}
+				onClose={() =>
+					handleOpen({
+						open: false,
+					})
+				}
 				aria-labelledby="form-dialog-title"
 				disableEscapeKeyDown
 			>
 				<DialogActions className={classes.cancelIcon}>
-					<Button onClick={handleClose} color="secondary">
+					<Button
+						onClick={() =>
+							handleOpen({
+								open: false,
+							})
+						}
+						color="secondary"
+					>
 						<CancelIcon />
 					</Button>
 				</DialogActions>
-				{mode === auth.register && (
+				{state.mode === auth.register && (
 					<>
-						<Register handleClose={handleClose} />
+						<Register
+							handleClose={() =>
+								handleOpen({
+									open: false,
+								})
+							}
+						/>
 						<Box textAlign="center" component="div">
 							<Button
 								color="primary"
 								className={classes.toggleBtn}
-								onClick={() => setMode(auth.login)}
+								onClick={() => handleOpen({ mode: auth.login })}
 							>
-								Already have an account, Login here
+								Đã có tài khoản, đăng nhập ngay!
 							</Button>
 						</Box>
 					</>
 				)}
-				{mode === auth.login && (
+				{state.mode === auth.login && (
 					<>
-						<Login handleClose={handleClose} />
+						<Login handleClose={() => handleOpen({ open: false })} />
 						<Box textAlign="center" component="div">
 							<Button
 								color="primary"
 								className={classes.toggleBtn}
-								onClick={() => setMode(auth.register)}
+								onClick={() => handleOpen({ mode: auth.register })}
 							>
-								Don't have an account, register here
+								Bạn chưa có tài khoản, đăng ký tại đây
 							</Button>
 						</Box>
 					</>
@@ -192,3 +329,7 @@ export default function NavBar() {
 		</div>
 	)
 }
+NavBar.propTypes = {
+	width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
+}
+export default withWidth()(NavBar)

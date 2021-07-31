@@ -2,9 +2,11 @@
 import { Box, Chip } from '@material-ui/core'
 import { blue } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
+import { addFilterByCategory } from 'components/Navbar/NavBarSlice'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { useMemo } from 'react'
+import { useDispatch } from 'react-redux'
 const FILTER_LIST = [
 	{
 		id: 1,
@@ -58,6 +60,7 @@ const FILTER_LIST = [
 		getLabel: () => 'Thời Trang',
 		isVisible: (filters) => (filters['category.id'] === 1 ? true : false),
 		isActive: (filters) => true,
+		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
@@ -72,6 +75,7 @@ const FILTER_LIST = [
 		getLabel: () => 'Khẩu Trang',
 		isVisible: (filters) => (filters['category.id'] === 2 ? true : false),
 		isActive: (filters) => true,
+		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
@@ -86,6 +90,7 @@ const FILTER_LIST = [
 		getLabel: () => 'Làm Đẹp',
 		isVisible: (filters) => (filters['category.id'] === 3 ? true : false),
 		isActive: (filters) => true,
+		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
@@ -100,6 +105,7 @@ const FILTER_LIST = [
 		getLabel: () => 'Laptop',
 		isVisible: (filters) => (filters['category.id'] === 4 ? true : false),
 		isActive: (filters) => true,
+		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
@@ -114,6 +120,7 @@ const FILTER_LIST = [
 		getLabel: () => 'Ổ Cứng',
 		isVisible: (filters) => (filters['category.id'] === 5 ? true : false),
 		isActive: (filters) => true,
+		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
@@ -128,6 +135,7 @@ const FILTER_LIST = [
 		getLabel: () => 'Điện thoại',
 		isVisible: (filters) => (filters['category.id'] === 6 ? true : false),
 		isActive: (filters) => true,
+		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
 			const newFilter = { ...filters }
@@ -155,6 +163,7 @@ const useStyle = makeStyles((theme) => ({
 	},
 }))
 function ShowFilters({ onChange = null, filters = {} }) {
+	const dispatch = useDispatch()
 	const visibleFilters = useMemo(() => FILTER_LIST.filter((x) => x.isVisible(filters)), [filters])
 	const classes = useStyle()
 	return (
@@ -182,6 +191,9 @@ function ShowFilters({ onChange = null, filters = {} }) {
 									? null
 									: () => {
 											if (!onChange) return
+											if (x.isDispatch) {
+												dispatch(addFilterByCategory(null))
+											}
 											const newFilters = x.onRemove(filters)
 											onChange(newFilters)
 									  }

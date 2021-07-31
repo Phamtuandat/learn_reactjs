@@ -1,8 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core'
+import { Box, Container, Grid, makeStyles, Paper, withWidth } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
 import categoryApi from 'api/categoryAPI'
 import productApi from 'api/productAPI'
+import PropTypes from 'prop-types'
+import queryString from 'query-string'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import PriceFilter from '../Component/Filter/PriceFilter'
@@ -10,17 +11,18 @@ import ProductFilter from '../Component/ProductFilter'
 import ProductList from '../Component/ProductList'
 import ShowFilters from '../Component/ShowFilters'
 import SkeletonListPage from '../Component/skeletonListPage'
-import queryString from 'query-string'
 
 const useStyle = makeStyles((theme) => ({
 	root: {},
-	right: {},
+	ShowFilters: {
+		minHeight: 64,
+	},
 	pagination: {
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
 		marginTop: theme.spacing(6),
-		padding: theme.spacing(2),
+		paddingBottom: theme.spacing(2),
 	},
 }))
 function ListPage(props) {
@@ -116,30 +118,31 @@ function ListPage(props) {
 			search: queryString.stringify(filter),
 		})
 	}
-
 	return (
 		<Box>
 			<Container maxWidth="lg">
 				<Grid container spacing={1}>
-					<Grid item xs={false} md={3} sm={3}>
-						<Paper>
-							<ProductFilter
-								categoryList={categoryList}
-								onChange={handleFilter}
-								filters={queryParam}
-							/>
-						</Paper>
-					</Grid>
+					<>
+						<Grid item md={3} sm={3} xs={12}>
+							<Paper>
+								<ProductFilter
+									categoryList={categoryList}
+									onChange={handleFilter}
+									filters={queryParam}
+								/>
+							</Paper>
+						</Grid>
+					</>
 					<Grid item xs={12} md={9} sm={9} className={classes.right}>
 						<Paper>
 							<PriceFilter onChange={handleChange} currentFilter={queryParam._sort} />
 							{isLoading ? (
 								<SkeletonListPage lenght={productsList.length} />
 							) : (
-								<>
+								<div className={classes.ShowFilters}>
 									<ShowFilters filters={queryParam} onChange={handleShowFilter} />
 									<ProductList products={productsList} />
-								</>
+								</div>
 							)}
 							<div className={classes.pagination}>
 								<Pagination
@@ -155,5 +158,7 @@ function ListPage(props) {
 		</Box>
 	)
 }
-
-export default ListPage
+ListPage.propTypes = {
+	width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
+}
+export default withWidth()(ListPage)

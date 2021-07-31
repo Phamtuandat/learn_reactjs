@@ -1,10 +1,42 @@
-import React from 'react'
+import { Box, Hidden, makeStyles, Typography, withWidth } from '@material-ui/core'
+import BurstModeIcon from '@material-ui/icons/BurstMode'
+import CreditCardIcon from '@material-ui/icons/CreditCard'
+import LaptopIcon from '@material-ui/icons/Laptop'
+import RedditIcon from '@material-ui/icons/Reddit'
+import RedeemIcon from '@material-ui/icons/Redeem'
+import SmartphoneIcon from '@material-ui/icons/Smartphone'
 import PropTypes from 'prop-types'
-import { Box, makeStyles, Typography } from '@material-ui/core'
+import React from 'react'
 import FilterByCategory from './Filter/FilterByCategory'
 import FilterByPrice from './Filter/FilterByPrice'
 import FilterByService from './Filter/FilterByService'
 
+const ICON_LIST = [
+	{
+		id: 1,
+		component: <BurstModeIcon />,
+	},
+	{
+		id: 2,
+		component: <RedditIcon />,
+	},
+	{
+		id: 3,
+		component: <RedeemIcon />,
+	},
+	{
+		id: 4,
+		component: <LaptopIcon />,
+	},
+	{
+		id: 5,
+		component: <CreditCardIcon />,
+	},
+	{
+		id: 6,
+		component: <SmartphoneIcon />,
+	},
+]
 const useStyle = makeStyles((theme) => ({
 	title: {
 		fontWeight: '500',
@@ -14,6 +46,11 @@ const useStyle = makeStyles((theme) => ({
 	categoryList: {
 		padding: theme.spacing(1),
 		margin: 0,
+		[theme.breakpoints.down('xs')]: {
+			width: '100%',
+			display: 'flex',
+			flexFlow: 'wrap',
+		},
 	},
 	root: {},
 }))
@@ -32,7 +69,10 @@ function ProductFilter({ onChange, categoryList, filters }) {
 	const handleFilterPrice = (value) => {
 		const newValue = { ...value }
 		if (newValue.salePrice_lte !== 0 && newValue.salePrice_lte > newValue.salePrice_gte) {
-			if (!newValue.salePrice_lte || (!newValue.salePrice_gte && newValue.salePrice_gte !== 0)) {
+			if (
+				!newValue.salePrice_lte ||
+				(!newValue.salePrice_gte && newValue.salePrice_gte !== 0)
+			) {
 				return
 			} else {
 				onChange(newValue)
@@ -51,11 +91,14 @@ function ProductFilter({ onChange, categoryList, filters }) {
 							onChange={handleFilterCategory}
 							category={x}
 							className={classes.listCategory}
+							icon={ICON_LIST.filter((item) => x.id === item.id)}
 						/>
 					)
 				})}
 			</ul>
-			<FilterByPrice onChange={handleFilterPrice} />
+			<Hidden xsDown>
+				<FilterByPrice onChange={handleFilterPrice} />
+			</Hidden>
 			<FilterByService filters={filters} onChange={handleFilterService} />
 		</Box>
 	)
@@ -67,4 +110,4 @@ ProductFilter.propTypes = {
 	filters: PropTypes.object,
 }
 
-export default ProductFilter
+export default withWidth()(ProductFilter)

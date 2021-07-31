@@ -5,7 +5,7 @@ import { Box, Grid } from '@material-ui/core'
 
 function SkeletonListPage({ lenght }) {
 	return (
-		<Box minHeight={1212}>
+		<Box minHeight={1212} mt={8}>
 			<Grid container>
 				{Array.from(new Array(lenght)).map((item, index) => {
 					return (

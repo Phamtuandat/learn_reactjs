@@ -47,7 +47,10 @@ function Product({ product }) {
 			</Typography>
 			<Typography variant="body1">
 				<Box mr={1} fontWeight="bold" component="span">
-					{new Intl.NumberFormat({ style: 'currency', currency: 'VND' }).format(product.salePrice)}đ
+					{new Intl.NumberFormat({ style: 'currency', currency: 'VND' }).format(
+						product.salePrice
+					)}
+					đ
 				</Box>
 				{product.promotionPercent > 0 ? `-${product.promotionPercent}%` : ''}
 			</Typography>

@@ -2,11 +2,11 @@ import { Grid } from '@material-ui/core'
 import React from 'react'
 import Product from './Product'
 
-function ProductList({ products }) {
+function ProductList({ products = [] }) {
 	return (
 		<Grid container spacing={0}>
 			{products.map((product, index) => (
-				<Grid item key={index} xs={12} md={4} lg={3} sm={6}>
+				<Grid item key={index} xs={6} md={4} lg={3} sm={6}>
 					<Product product={product} />
 				</Grid>
 			))}
