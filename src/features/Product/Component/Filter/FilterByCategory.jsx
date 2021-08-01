@@ -12,6 +12,7 @@ const useStyle = makeStyles((theme) => ({
 		},
 	},
 	category: {
+		fontSize: 14,
 		paddingTop: theme.spacing(2),
 		paddingLeft: theme.spacing(2),
 		cursor: 'pointer',
@@ -28,9 +29,7 @@ function FilterByCategory({ onChange, category, icon }) {
 	return (
 		<li className={classes.listCategory} onClick={() => handleChange(category.id)}>
 			<IconButton>{icon[0].component}</IconButton>
-			<Typography variant="body2" className={classes.category}>
-				{category.name}
-			</Typography>
+			<Typography className={classes.category}>{category.name}</Typography>
 		</li>
 	)
 }

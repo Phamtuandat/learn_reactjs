@@ -9,17 +9,19 @@ import './index.css'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
-	<Provider store={store}>
-		<BrowserRouter>
-			<SnackbarProvider
-				maxSnack={3}
-				autoHideDuration={3000}
-				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-			>
-				<App />
-			</SnackbarProvider>
-		</BrowserRouter>
-	</Provider>,
+	<React.StrictMode>
+		<Provider store={store}>
+			<BrowserRouter>
+				<SnackbarProvider
+					maxSnack={3}
+					autoHideDuration={3000}
+					anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+				>
+					<App />
+				</SnackbarProvider>
+			</BrowserRouter>
+		</Provider>
+	</React.StrictMode>,
 	document.getElementById('root')
 )
 

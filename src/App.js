@@ -7,11 +7,12 @@ import NotFound from 'features/NotFound/index'
 import ProductFeatures from 'features/Product/index'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import './App.css'
+import { ThemeProvider } from '@material-ui/styles'
+import { theme } from 'common/theme'
 
 function App() {
 	return (
-		<div>
+		<ThemeProvider theme={theme}>
 			<NavBar />
 			<Box>
 				<Switch>
@@ -22,7 +23,7 @@ function App() {
 				</Switch>
 			</Box>
 			<Footer />
-		</div>
+		</ThemeProvider>
 	)
 }
 

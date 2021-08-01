@@ -13,7 +13,11 @@ import ShowFilters from '../Component/ShowFilters'
 import SkeletonListPage from '../Component/skeletonListPage'
 
 const useStyle = makeStyles((theme) => ({
-	root: {},
+	root: {
+		[theme.breakpoints.up(['md'])]: {
+			margin: theme.spacing(0, 8, 0, 8),
+		},
+	},
 	ShowFilters: {
 		minHeight: 64,
 	},
@@ -119,12 +123,12 @@ function ListPage(props) {
 		})
 	}
 	return (
-		<Box>
-			<Container maxWidth="lg">
+		<Box className={classes.root}>
+			<Container maxWidth={false}>
 				<Grid container spacing={1}>
 					<>
-						<Grid item md={3} sm={3} xs={12}>
-							<Paper>
+						<Grid item md={3} sm={12} xs={12} lg={2}>
+							<Paper elevation={0}>
 								<ProductFilter
 									categoryList={categoryList}
 									onChange={handleFilter}
@@ -133,8 +137,8 @@ function ListPage(props) {
 							</Paper>
 						</Grid>
 					</>
-					<Grid item xs={12} md={9} sm={9} className={classes.right}>
-						<Paper>
+					<Grid item xs={12} md={9} sm={12} lg={10} className={classes.right}>
+						<Paper elevation={0}>
 							<PriceFilter onChange={handleChange} currentFilter={queryParam._sort} />
 							{isLoading ? (
 								<SkeletonListPage lenght={productsList.length} />

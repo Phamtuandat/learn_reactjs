@@ -6,20 +6,30 @@ import { useHistory } from 'react-router-dom'
 
 const useStyle = makeStyles((theme) => ({
 	root: {
-		'&:hover': {
-			boxShadow: ' rgb(0 0 0 / 10%) 0px 0px 20px',
-			zIndex: 1,
-		},
 		cursor: 'pointer',
-		height: '100%',
+		overflow: 'hidden',
 	},
 	title: {
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
+		paddingBottom: 8,
 	},
 	cardMedia: {
-		marginTop: theme.spacing(1),
+		transition: theme.transitions.create(['transform'], {
+			duration: theme.transitions.duration.complex,
+		}),
+		padding: 0,
+		'&:hover': {
+			transform: 'scale(1.1)',
+		},
+	},
+	imageBox: {
+		overflow: 'hidden',
+		padding: 0,
+	},
+	infoBox: {
+		padding: 14,
 	},
 }))
 function Product({ product }) {
@@ -33,7 +43,7 @@ function Product({ product }) {
 	}
 	return (
 		<Box padding={1} className={classes.root} onClick={handleClick}>
-			<Box padding={1}>
+			<Box padding={1} className={classes.imageBox}>
 				<CardMedia
 					component="img"
 					alt={product.name}
@@ -42,18 +52,20 @@ function Product({ product }) {
 					className={classes.cardMedia}
 				/>
 			</Box>
-			<Typography variant="body1" className={classes.title}>
-				{product.name}
-			</Typography>
-			<Typography variant="body1">
-				<Box mr={1} fontWeight="bold" component="span">
-					{new Intl.NumberFormat({ style: 'currency', currency: 'VND' }).format(
-						product.salePrice
-					)}
-					đ
-				</Box>
-				{product.promotionPercent > 0 ? `-${product.promotionPercent}%` : ''}
-			</Typography>
+			<Box className={classes.infoBox}>
+				<Typography variant="body2" className={classes.title}>
+					{product.name}
+				</Typography>
+				<Typography variant="body2">
+					<Box mr={1} fontWeight="bold" component="span">
+						{new Intl.NumberFormat({ style: 'currency', currency: 'VND' }).format(
+							product.salePrice
+						)}
+						đ
+					</Box>
+					{product.promotionPercent > 0 ? `-${product.promotionPercent}%` : ''}
+				</Typography>
+			</Box>
 		</Box>
 	)
 }

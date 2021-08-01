@@ -8,12 +8,13 @@ import {
 	Menu,
 	MenuItem,
 	withWidth,
+	useMediaQuery,
 } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import { AccountCircle } from '@material-ui/icons'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -92,8 +93,10 @@ const auth = {
 	login: 'login',
 	register: 'register',
 }
-function NavBar() {
+function NavBar(props) {
 	const classes = useStyles()
+	const theme = useTheme()
+	const matches = useMediaQuery(theme.breakpoints.up('sm'))
 	const categoryId = useSelector((state) => state.categoryId.categoryId)
 
 	const history = useHistory()
@@ -269,7 +272,7 @@ function NavBar() {
 			</Drawer>
 
 			<Dialog
-				fullScreen={['xs', 'sm'] && true}
+				fullScreen={!matches}
 				open={state.open}
 				onClose={() =>
 					handleOpen({

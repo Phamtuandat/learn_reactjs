@@ -1,7 +1,8 @@
 html {
-	background-color: rgb(244, 244, 244);
+	background-color: rgb(255, 255, 255);
 }
 body {
+	background-color: rgb(255, 255, 255) !important;
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
 		'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
