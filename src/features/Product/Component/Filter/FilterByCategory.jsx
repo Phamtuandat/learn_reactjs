@@ -6,7 +6,7 @@ const useStyle = makeStyles((theme) => ({
 	listCategory: {
 		listStyleType: 'none',
 		display: 'flex',
-		[theme.breakpoints.down('xs')]: {
+		[theme.breakpoints.down('sm')]: {
 			width: '30%',
 			flexDirection: 'column',
 		},
@@ -19,6 +19,10 @@ const useStyle = makeStyles((theme) => ({
 		'&:hover': {
 			color: theme.palette.primary.dark,
 		},
+	},
+	[theme.breakpoints.down('sm')]: {
+		width: '30%',
+		flexDirection: 'column',
 	},
 }))
 function FilterByCategory({ onChange, category, icon }) {

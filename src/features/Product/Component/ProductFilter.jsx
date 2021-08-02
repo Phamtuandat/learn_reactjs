@@ -45,11 +45,9 @@ const useStyle = makeStyles((theme) => ({
 	},
 	categoryList: {
 		padding: theme.spacing(1),
-		margin: 0,
-		[theme.breakpoints.down('xs')]: {
-			width: '100%',
+		margin: ' 10px  0 10px 0',
+		[theme.breakpoints.down('sm')]: {
 			display: 'flex',
-			flexFlow: 'wrap',
 		},
 	},
 	root: {},

@@ -4,11 +4,9 @@ import Product from './Product'
 
 function ProductList({ products = [] }) {
 	return (
-		<Grid container spacing={1}>
+		<Grid container spacing={0}>
 			{products.map((product, index) => (
-				<Grid item key={index} xs={6} md={4} lg={3} sm={6}>
-					<Product product={product} />
-				</Grid>
+				<Product product={product} key={index} />
 			))}
 		</Grid>
 	)

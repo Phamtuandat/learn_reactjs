@@ -7,8 +7,8 @@ import {
 	Link,
 	Menu,
 	MenuItem,
-	withWidth,
 	useMediaQuery,
+	withWidth,
 } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
@@ -27,10 +27,9 @@ import Login from 'features/Auth/component/Login'
 import Register from 'features/Auth/component/Register'
 import { countItems } from 'features/Cart/CartSelector'
 import PropTypes from 'prop-types'
-import queryString from 'query-string'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useHistory, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import ReponsiveAppBar from './ReponsiveAppBar'
 
 const useStyles = makeStyles((theme) => ({
@@ -97,22 +96,6 @@ function NavBar(props) {
 	const classes = useStyles()
 	const theme = useTheme()
 	const matches = useMediaQuery(theme.breakpoints.up('sm'))
-	const categoryId = useSelector((state) => state.categoryId.categoryId)
-
-	const history = useHistory()
-	const location = useLocation()
-	const queryParam = useMemo(() => {
-		const params = queryString.parse(location.search)
-		return {
-			...params,
-			'category.id': params['category.id'] || null,
-			_sort: params._sort || 'salePrice:ASC',
-			_limit: +params._limit || 12,
-			_page: +params._page || 1,
-			isFreeShip: params.isFreeShip === 'true' ? true : null,
-			isPromotion: params.isPromotion === 'true' ? true : null,
-		}
-	}, [location.search])
 
 	const [state, setState] = useState({
 		openNav: false,
@@ -153,17 +136,7 @@ function NavBar(props) {
 		dispatch(action)
 		handleCloseMenu()
 	}
-	useEffect(() => {
-		if (categoryId == null) return
-		const filter = {
-			...queryParam,
-			'category.id': categoryId !== null ? categoryId : null,
-		}
-		history.push({
-			pathname: history.location.pathname,
-			search: queryString.stringify(filter),
-		})
-	}, [categoryId, history, queryParam])
+
 	const toggleDrawer = () => (event) => {
 		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return

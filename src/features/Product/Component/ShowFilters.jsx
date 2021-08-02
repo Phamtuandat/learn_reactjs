@@ -149,10 +149,10 @@ const FILTER_LIST = [
 const useStyle = makeStyles((theme) => ({
 	root: {
 		padding: 0,
-		margin: 0,
+		margin: 10,
 		display: 'flex',
-		marginTop: theme.spacing(1),
-		marginBottom: theme.spacing(1),
+		marginTop: theme.spacing(2),
+		marginBottom: theme.spacing(2),
 	},
 	filter: {
 		listStyleType: 'none',

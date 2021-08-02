@@ -13,11 +13,7 @@ import ShowFilters from '../Component/ShowFilters'
 import SkeletonListPage from '../Component/skeletonListPage'
 
 const useStyle = makeStyles((theme) => ({
-	root: {
-		[theme.breakpoints.up(['md'])]: {
-			margin: theme.spacing(0, 8, 0, 8),
-		},
-	},
+	root: {},
 	ShowFilters: {
 		minHeight: 64,
 	},
