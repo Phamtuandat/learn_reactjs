@@ -7,7 +7,7 @@ import ProductDetail from './page/ProductDetail'
 function ProductFeatures(props) {
 	const math = useRouteMatch()
 	return (
-		<Box pt={4}>
+		<Box mt={2}>
 			<Switch>
 				<Route path={math.url} exact component={ListPage} />
 				<Route path={`${math.url}/:productId`} component={ProductDetail} />

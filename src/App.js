@@ -9,11 +9,13 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/styles'
 import { theme } from 'common/theme'
+import Header from 'features/Header'
 
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<NavBar />
+			<Header />
 			<Box>
 				<Switch>
 					<Route path="/" exact component={Home} />

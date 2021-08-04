@@ -1,8 +1,22 @@
-import { Box, CardMedia, Grid, makeStyles, Typography } from '@material-ui/core'
+import {
+	Box,
+	Button,
+	CardMedia,
+	Fade,
+	Grid,
+	makeStyles,
+	Slide,
+	Typography,
+} from '@material-ui/core'
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import { THUMBNAIL_PLACEHOLDER } from 'Contant'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
+import { addToWishList } from 'features/wish/WishListSlice'
+import { useDispatch } from 'react-redux'
+import { addToCart } from 'features/Cart/CartSlice'
 
 const useStyle = makeStyles((theme) => ({
 	productCard: {
@@ -45,8 +59,46 @@ const useStyle = makeStyles((theme) => ({
 		padding: 14,
 		marginTop: 16,
 	},
+	viewIcon: {
+		position: 'absolute',
+		zIndex: 1,
+		top: 16,
+		right: 16,
+		borderRadius: '50%',
+	},
+	wishIcon: {
+		position: 'absolute',
+		zIndex: 1,
+		top: 60,
+		right: 16,
+		borderRadius: '50%',
+	},
+	viewBox: {
+		fontSize: 22,
+	},
+	actBtn: {
+		border: 'none !important',
+	},
+	wishBox: {
+		fontSize: 22,
+		color: theme.palette.error.main,
+	},
+	addToCart: {
+		backgroundColor: 'white',
+		position: 'absolute',
+		top: '65%',
+		zIndex: 1,
+		left: '50%',
+		transform: 'translateX(-50%)',
+		fontSize: '14px',
+		padding: '10px',
+	},
+	addToCartBtn: {},
 }))
 function Product({ product }) {
+	const [onHover, setOnHover] = useState(false)
+	const dispatch = useDispatch()
+
 	const history = useHistory()
 	const classes = useStyle()
 	const thumbnail = THUMBNAIL_PLACEHOLDER(product.category.id)
@@ -60,20 +112,64 @@ function Product({ product }) {
 			md={6}
 			lg={3}
 			sm={6}
-			onClick={handleClick}
 			className={classes.productCard}
+			onMouseOver={() => setOnHover(true)}
+			onMouseLeave={() => setOnHover(false)}
 		>
-			<Box className={classes.root}>
-				<Box className={classes.imageBox}>
+			<Box className={classes.root} position="relative">
+				<Slide direction="down" in={onHover} className={classes.viewIcon}>
+					<Button variant="contained" className={classes.actBtn}>
+						<VisibilityOutlinedIcon className={classes.viewBox} />
+					</Button>
+				</Slide>
+				<Fade
+					timeout={500}
+					direction="left"
+					in={onHover}
+					className={classes.wishIcon}
+					disableStrictModeCompat
+				>
+					<Button
+						variant="contained"
+						className={classes.actBtn}
+						onClick={() => dispatch(addToWishList(product))}
+					>
+						<FavoriteBorderIcon className={classes.wishBox} />
+					</Button>
+				</Fade>
+				<Fade
+					timeout={300}
+					direction="left"
+					in={onHover}
+					className={classes.addToCart}
+					disableStrictModeCompat
+				>
+					<Button
+						variant="contained"
+						className={classes.addToCartBtn}
+						onClick={() =>
+							dispatch(
+								addToCart({
+									id: product.id,
+									product,
+									quantity: 1,
+								})
+							)
+						}
+					>
+						Thêm vào giỏ hàng
+					</Button>
+				</Fade>
+				<Box className={classes.imageBox} onClick={handleClick}>
 					<CardMedia
 						component="img"
 						alt={product.name}
 						image={thumbnail}
 						title={product.name}
 						className={classes.cardMedia}
-					/>
+					></CardMedia>
 				</Box>
-				<Box className={classes.infoBox}>
+				<Box className={classes.infoBox} onClick={handleClick}>
 					<Typography variant="body2" className={classes.title}>
 						{product.name}
 					</Typography>

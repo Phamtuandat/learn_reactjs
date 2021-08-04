@@ -48,7 +48,7 @@ const FILTER_LIST = [
 		isActive: (filters) => true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter.salePrice_gte
 			delete newFilter.salePrice_lte
 			return newFilter
@@ -63,9 +63,10 @@ const FILTER_LIST = [
 		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter['category.id']
 			delete newFilter['category.id']
+
 			return newFilter
 		},
 		onToggle: (filters) => null,
@@ -78,7 +79,7 @@ const FILTER_LIST = [
 		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter['category.id']
 			delete newFilter['category.id']
 			return newFilter
@@ -93,7 +94,7 @@ const FILTER_LIST = [
 		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter['category.id']
 			delete newFilter['category.id']
 			return newFilter
@@ -108,7 +109,7 @@ const FILTER_LIST = [
 		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter['category.id']
 			delete newFilter['category.id']
 			return newFilter
@@ -123,7 +124,7 @@ const FILTER_LIST = [
 		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter['category.id']
 			delete newFilter['category.id']
 			return newFilter
@@ -138,7 +139,7 @@ const FILTER_LIST = [
 		isDispatch: true,
 		isRemovalble: true,
 		onRemove: (filters) => {
-			const newFilter = { ...filters }
+			const newFilter = { ...filters, _page: 1 }
 			delete newFilter['category.id']
 			delete newFilter['category.id']
 			return newFilter

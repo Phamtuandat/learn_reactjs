@@ -91,11 +91,14 @@ function ListPage(props) {
 			pathname: history.location.pathname,
 			search: queryString.stringify(filter),
 		})
+		document.body.scrollTop = 0
+		document.documentElement.scrollTop = 0
 	}
 	const handleChange = (value) => {
 		const filter = {
 			...queryParam,
 			_sort: value,
+			_page: 1,
 		}
 		history.push({
 			pathname: history.location.pathname,
@@ -106,6 +109,7 @@ function ListPage(props) {
 		const newFilter = {
 			...queryParam,
 			...filter,
+			_page: 1,
 		}
 		history.push({
 			pathname: history.location.pathname,
@@ -118,6 +122,7 @@ function ListPage(props) {
 			search: queryString.stringify(filter),
 		})
 	}
+
 	return (
 		<Box className={classes.root}>
 			<Container maxWidth={false}>

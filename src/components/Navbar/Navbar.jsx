@@ -1,30 +1,12 @@
-import {
-	Badge,
-	Box,
-	Drawer,
-	Hidden,
-	IconButton,
-	Link,
-	Menu,
-	MenuItem,
-	useMediaQuery,
-	withWidth,
-} from '@material-ui/core'
+import { Badge, Box, Drawer, Hidden, IconButton, Link, Slide, withWidth } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { grey } from '@material-ui/core/colors'
+import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
-import { AccountCircle } from '@material-ui/icons'
-import CancelIcon from '@material-ui/icons/Cancel'
 import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
-import StorefrontRoundedIcon from '@material-ui/icons/StorefrontRounded'
 import categoryApi from 'api/categoryAPI'
 import { logout } from 'features/Auth/authSlice'
-import Login from 'features/Auth/component/Login'
-import Register from 'features/Auth/component/Register'
 import { countItems } from 'features/Cart/CartSelector'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -36,25 +18,29 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
 		boxSizing: 'boder-box',
+
+		[theme.breakpoints.down('sm')]: {
+			justifyContent: 'center',
+		},
 	},
 
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
-	title: {
-		alignSelf: 'center',
-		color: 'white',
-		fontSize: 26,
-		'&:hover': {
-			textDecoration: 'none',
-			opacity: 0.85,
+	logo: {
+		marginLeft: 'auto',
+		[theme.breakpoints.down('sm')]: {
+			width: 150,
 		},
+	},
+	logoBox: {
+		// [theme.breakpoints.down('sm')]: {
+		// },
 	},
 	link: {
 		textDecoration: 'none',
 		color: '#fff',
-		display: 'flex',
-		justifyContent: 'flex-start',
+		alignSelf: 'center',
 	},
 	toggleBtn: {
 		marginBottom: 18,
@@ -70,15 +56,13 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 	},
 	cartLink: {
-		color: '#fff',
+		color: grey[700],
 	},
 	home: {
 		display: 'flex',
 		justifyContent: 'space-between',
 	},
-	logo: {
-		display: 'flex',
-	},
+
 	userBox: {
 		display: 'flex',
 	},
@@ -87,21 +71,18 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: '32px',
 		marginRight: 20,
 	},
+	AppBar: {
+		backgroundColor: '#FFFFFF',
+	},
 }))
-const auth = {
-	login: 'login',
-	register: 'register',
-}
+
 function NavBar(props) {
 	const classes = useStyles()
-	const theme = useTheme()
-	const matches = useMediaQuery(theme.breakpoints.up('sm'))
 
 	const [state, setState] = useState({
 		openNav: false,
 		open: false,
-		mode: auth.login,
-		anchorEl: 0,
+		hiddenNavBar: true,
 	})
 	const handleOpen = (value) => {
 		setState((prevState) => ({
@@ -121,11 +102,7 @@ function NavBar(props) {
 	const loggerUser = useSelector((state) => state.userReducer.current)
 	const isLogging = !!loggerUser?.id
 	const dispatch = useDispatch()
-	const handleClick = (event) => {
-		handleOpen({
-			anchorEl: event.currentTarget,
-		})
-	}
+
 	const handleCloseMenu = () => {
 		handleOpen({
 			anchorEl: false,
@@ -136,7 +113,19 @@ function NavBar(props) {
 		dispatch(action)
 		handleCloseMenu()
 	}
-
+	window.onscroll = () => {
+		if (window.scrollY >= 146) {
+			setState((prevState) => ({
+				...prevState,
+				hiddenNavBar: false,
+			}))
+		} else {
+			setState((prevState) => ({
+				...prevState,
+				hiddenNavBar: true,
+			}))
+		}
+	}
 	const toggleDrawer = () => (event) => {
 		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
 			return
@@ -147,83 +136,26 @@ function NavBar(props) {
 	const count = useSelector(countItems)
 	return (
 		<div className={classes.root}>
-			<AppBar position="static">
-				<Toolbar className={classes.home}>
-					<Box className={classes.logo}>
-						<NavLink className={classes.link} to="/products">
-							<Hidden mdUp>
-								<IconButton onClick={() => handleOpen({ openNav: true })}>
-									<MenuIcon />
-								</IconButton>
-							</Hidden>
-							<Hidden only={['xs']}>
-								<StorefrontRoundedIcon className={classes.shopIcon} />
-							</Hidden>
-						</NavLink>
-						<Link component={NavLink} to="/products" className={classes.title}>
-							EZ SHOP
+			<Slide direction="down" in={!state.hiddenNavBar}>
+				<AppBar className={classes.AppBar} position="fixed">
+					<Toolbar className={classes.home}>
+						<Hidden mdUp>
+							<Box className={classes.menuIcon}>
+								<NavLink className={classes.link} to="/products">
+									<IconButton onClick={() => handleOpen({ openNav: true })}>
+										<MenuIcon />
+									</IconButton>
+								</NavLink>
+							</Box>
+						</Hidden>
+						<Link component={NavLink} to="/products" className={classes.logoBox}>
+							<img
+								className={classes.logo}
+								src="https://cdn11.bigcommerce.com/s-wek9ye9/images/stencil/280x30/logo_1513222786__03534.original.png"
+								alt="brooklynk"
+							/>
 						</Link>
-					</Box>
-					<Box className={classes.userBox}>
-						{!isLogging && (
-							<Hidden only={['xs']}>
-								<Button
-									color="inherit"
-									onClick={() =>
-										handleOpen({
-											open: true,
-											mode: auth.register,
-										})
-									}
-								>
-									Đăng ký
-								</Button>
-								<Box component="span" alignSelf="center">
-									/
-								</Box>
-								<Button
-									color="inherit"
-									onClick={() =>
-										handleOpen({
-											open: true,
-											mode: auth.login,
-										})
-									}
-								>
-									Đăng nhập
-								</Button>
-							</Hidden>
-						)}
-						{!!isLogging && (
-							<Hidden xsDown>
-								<IconButton
-									color="inherit"
-									aria-haspopup="true"
-									onClick={handleClick}
-								>
-									<AccountCircle />
-								</IconButton>
-								<Menu
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'left',
-									}}
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'left',
-									}}
-									getContentAnchorEl={null}
-									id="simple-menu"
-									anchorEl={state.anchorEl}
-									keepMounted
-									open={Boolean(state.anchorEl)}
-									onClose={handleCloseMenu}
-								>
-									<MenuItem onClick={handleCloseMenu}>Tài khoản của tôi</MenuItem>
-									<MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
-								</Menu>
-							</Hidden>
-						)}
+
 						<IconButton aria-label="show 11 new notifications" color="inherit">
 							<Badge badgeContent={count} color="secondary">
 								<NavLink to="/cart" className={classes.cartLink}>
@@ -231,10 +163,9 @@ function NavBar(props) {
 								</NavLink>
 							</Badge>
 						</IconButton>
-					</Box>
-				</Toolbar>
-			</AppBar>
-
+					</Toolbar>
+				</AppBar>
+			</Slide>
 			<Drawer open={state.openNav} onClose={toggleDrawer(false)}>
 				<ReponsiveAppBar
 					handleClick={handleOpen}
@@ -243,65 +174,6 @@ function NavBar(props) {
 					categoryList={categoryList}
 				/>
 			</Drawer>
-
-			<Dialog
-				fullScreen={!matches}
-				open={state.open}
-				onClose={() =>
-					handleOpen({
-						open: false,
-					})
-				}
-				aria-labelledby="form-dialog-title"
-				disableEscapeKeyDown
-			>
-				<DialogActions className={classes.cancelIcon}>
-					<Button
-						onClick={() =>
-							handleOpen({
-								open: false,
-							})
-						}
-						color="secondary"
-					>
-						<CancelIcon />
-					</Button>
-				</DialogActions>
-				{state.mode === auth.register && (
-					<>
-						<Register
-							handleClose={() =>
-								handleOpen({
-									open: false,
-								})
-							}
-						/>
-						<Box textAlign="center" component="div">
-							<Button
-								color="primary"
-								className={classes.toggleBtn}
-								onClick={() => handleOpen({ mode: auth.login })}
-							>
-								Đã có tài khoản, đăng nhập ngay!
-							</Button>
-						</Box>
-					</>
-				)}
-				{state.mode === auth.login && (
-					<>
-						<Login handleClose={() => handleOpen({ open: false })} />
-						<Box textAlign="center" component="div">
-							<Button
-								color="primary"
-								className={classes.toggleBtn}
-								onClick={() => handleOpen({ mode: auth.register })}
-							>
-								Bạn chưa có tài khoản, đăng ký tại đây
-							</Button>
-						</Box>
-					</>
-				)}
-			</Dialog>
 		</div>
 	)
 }
