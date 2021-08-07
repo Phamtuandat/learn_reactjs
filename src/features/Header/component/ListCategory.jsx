@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 function ListCategory({ categoryList = [] }) {
 	const classes = useStyles()
-	console.log(categoryList)
 	return (
 		<Box component="ul" className={classes.root}>
 			{categoryList.map((item) => (

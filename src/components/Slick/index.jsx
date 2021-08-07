@@ -1,8 +1,9 @@
-import { Box, Button, Fade, Link, makeStyles, Slide } from '@material-ui/core'
+import { Box, Button, Fade, IconButton, Link, makeStyles, Slide } from '@material-ui/core'
 import { panelList } from 'image'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Slider from 'react-slick'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		objectFit: 'cover',
 	},
-
 	btn: {
 		transition: theme.transitions.create(['background-color'], {
 			duration: theme.transitions.duration.short,
@@ -87,11 +87,50 @@ const useStyles = makeStyles((theme) => ({
 			textDecoration: 'none',
 		},
 	},
+	nextArrow: {
+		width: 'fit-content',
+		transform: 'rotate(180deg)',
+		position: 'absolute',
+		top: '50%',
+		right: 24,
+		'&>button': {
+			color: '#ccc',
+			transform: 'scale(1.5)',
+		},
+	},
+	prevArrow: {
+		width: 'fit-content',
+		position: 'absolute',
+		top: '50%',
+		left: 24,
+		zIndex: 1,
+		'&>button': {
+			color: '#ccc',
+			transform: 'scale(1.5)',
+		},
+	},
 }))
 function Slick() {
 	const [state, setState] = useState(true)
+	const [onHover, setOnHover] = useState(false)
 
 	const classes = useStyles()
+
+	// custom nextArrow and prevArrow
+	const SampleNextArrow = ({ onClick, style }) => {
+		return (
+			<div className={classes.nextArrow} onClick={onClick} style={{ ...style }}>
+				<IconButton>{onHover && <ArrowBackIosIcon />}</IconButton>
+			</div>
+		)
+	}
+	const SamplePrevArrow = ({ onClick, style }) => {
+		return (
+			<div className={classes.prevArrow} onClick={onClick} style={{ ...style }}>
+				<IconButton>{onHover && <ArrowBackIosIcon />}</IconButton>
+			</div>
+		)
+	}
 	const settings = {
 		customPaging: function (i) {
 			return (
@@ -111,9 +150,12 @@ function Slick() {
 		cssEase: 'linear',
 		beforeChange: () => setState(false),
 		afterChange: () => setState(true),
+		nextArrow: <SampleNextArrow />,
+		prevArrow: <SamplePrevArrow />,
 	}
+
 	return (
-		<div>
+		<div onMouseOver={() => setOnHover(true)} onMouseLeave={() => setOnHover(false)}>
 			<Slider {...settings}>
 				{panelList.map((img, i) => (
 					<div key={i} className={classes.root}>
