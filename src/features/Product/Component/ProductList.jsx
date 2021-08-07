@@ -4,7 +4,7 @@ import Product from './Product'
 
 function ProductList({ products = [] }) {
 	return (
-		<Grid container spacing={0}>
+		<Grid container spacing={2}>
 			{products.map((product, index) => (
 				<Product product={product} key={index} />
 			))}

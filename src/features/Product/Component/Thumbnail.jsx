@@ -1,28 +1,68 @@
-import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'Contant'
+import { imgList } from 'image'
 import PropTypes from 'prop-types'
 import React from 'react'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import Slider from 'react-slick'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		magin: 0,
 	},
-	content: {
+	box: {
+		height: 475,
+	},
+	image: {
 		width: '100%',
+	},
+	pagination: {
+		display: 'flex !important',
+		listStyleType: 'none',
+		marginLeft: -18,
+		'&>li': {
+			marginLeft: 36,
+		},
 	},
 }))
 
 function Thumbnail({ product, isLoading }) {
 	const classes = useStyles()
-	const thumbnail = product.thumbnail
-		? `${STATIC_HOST}${product.thumbnail.url}`
-		: THUMBNAIL_PLACEHOLDER
+
+	const settings = {
+		dots: true,
+		dotsClass: classes.pagination,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		fade: true,
+		customPaging: (i) => (
+			<div
+				style={{
+					width: '30px',
+				}}
+			>
+				<img
+					src={imgList[i]}
+					alt={imgList[i]}
+					style={{
+						width: '60px',
+						height: '60px',
+						objectFit: 'contain',
+						borderRadius: '4px',
+					}}
+				/>
+			</div>
+		),
+	}
+
 	return (
-		<Box>
-			<img src={thumbnail} alt={product.name} className={classes.content} />
-		</Box>
+		<Slider {...settings}>
+			{imgList.map((img) => (
+				<div key={product.name} className={classes.box}>
+					<img src={img} alt={product.name} className={classes.image} />
+				</div>
+			))}
+		</Slider>
 	)
 }
 

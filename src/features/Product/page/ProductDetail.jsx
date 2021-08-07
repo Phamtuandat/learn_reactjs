@@ -16,6 +16,7 @@ import { addToCart } from 'features/Cart/CartSlice'
 const useStyle = makeStyles((theme) => ({
 	root: {
 		minHeight: theme.spacing(110),
+		marginTop: 36,
 	},
 	detailsContent: {
 		borderLeft: '1px solid #ddd',
@@ -26,7 +27,7 @@ const useStyle = makeStyles((theme) => ({
 	},
 	progress: {
 		position: 'relative',
-		top: -32,
+		top: -177,
 	},
 }))
 function ProductDetail(props) {

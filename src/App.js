@@ -1,15 +1,15 @@
 import { Box } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/styles'
+import { theme } from 'common/theme'
 import Footer from 'components/Footer'
 import NavBar from 'components/Navbar/Navbar'
 import CartFeatures from 'features/Cart'
-import Home from 'features/Home/Component/Home'
+import Header from 'features/Header'
+import HomePage from 'features/Home/Index'
 import NotFound from 'features/NotFound/index'
 import ProductFeatures from 'features/Product/index'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { ThemeProvider } from '@material-ui/styles'
-import { theme } from 'common/theme'
-import Header from 'features/Header'
 
 function App() {
 	return (
@@ -18,7 +18,7 @@ function App() {
 			<Header />
 			<Box>
 				<Switch>
-					<Route path="/" exact component={Home} />
+					<Route path="/" exact component={HomePage} />
 					<Route path="/products" component={ProductFeatures} />
 					<Route path="/cart" component={CartFeatures} />
 					<Route path="" component={NotFound} />

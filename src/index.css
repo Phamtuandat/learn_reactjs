@@ -14,3 +14,25 @@ body {
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+.slick-dots.slick-thumb {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: relative;
+  }
+  
+  .slick-dots.slick-thumb li {
+	width: 8px;
+	height: 8px;
+	margin: 0 6px;
+	border-radius: 999px;
+	transition: all 0.5s ease-in-out;
+	will-change: width;
+	background-color: rgb(255, 255, 255);
+	border: 1px solid #ccc !important
+}
+
+.slick-dots.slick-thumb li.slick-active {
+	background-color: #ccc;
+	width: 24px;
+  }

@@ -8,6 +8,7 @@ function PriceFilter({ onChange, currentFilter }) {
 	}
 	return (
 		<Tabs
+			fullWidth
 			value={currentFilter}
 			indicatorColor="primary"
 			textColor="primary"

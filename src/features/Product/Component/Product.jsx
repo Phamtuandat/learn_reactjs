@@ -1,10 +1,13 @@
 import {
+	Backdrop,
 	Box,
 	Button,
 	CardMedia,
 	Fade,
 	Grid,
+	Hidden,
 	makeStyles,
+	Modal,
 	Slide,
 	Typography,
 } from '@material-ui/core'
@@ -17,13 +20,13 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import { addToWishList } from 'features/wish/WishListSlice'
 import { useDispatch } from 'react-redux'
 import { addToCart } from 'features/Cart/CartSlice'
+import ImageDetail from './imageDetail'
 
 const useStyle = makeStyles((theme) => ({
 	productCard: {
 		display: 'flex',
 	},
 	root: {
-		marginLeft: 16,
 		cursor: 'pointer',
 		overflow: 'hidden',
 		display: 'flex',
@@ -90,13 +93,21 @@ const useStyle = makeStyles((theme) => ({
 		zIndex: 1,
 		left: '50%',
 		transform: 'translateX(-50%)',
-		fontSize: '14px',
-		padding: '10px',
+		fontSize: '12px',
+		padding: '8px',
+		width: 150,
 	},
-	addToCartBtn: {},
+
+	modal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 }))
 function Product({ product }) {
 	const [onHover, setOnHover] = useState(false)
+	const [isOpenImageDetail, setOpenImageDetail] = useState(false)
+
 	const dispatch = useDispatch()
 
 	const history = useHistory()
@@ -117,11 +128,17 @@ function Product({ product }) {
 			onMouseLeave={() => setOnHover(false)}
 		>
 			<Box className={classes.root} position="relative">
-				<Slide direction="down" in={onHover} className={classes.viewIcon}>
-					<Button variant="contained" className={classes.actBtn}>
-						<VisibilityOutlinedIcon className={classes.viewBox} />
-					</Button>
-				</Slide>
+				<Hidden smDown>
+					<Slide direction="down" in={onHover} className={classes.viewIcon}>
+						<Button
+							variant="contained"
+							className={classes.actBtn}
+							onClick={() => setOpenImageDetail(!isOpenImageDetail)}
+						>
+							<VisibilityOutlinedIcon className={classes.viewBox} />
+						</Button>
+					</Slide>
+				</Hidden>
 				<Fade
 					timeout={500}
 					direction="left"
@@ -184,6 +201,25 @@ function Product({ product }) {
 					</Typography>
 				</Box>
 			</Box>
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				className={classes.modal}
+				open={isOpenImageDetail}
+				onClose={() => {
+					setOpenImageDetail(!isOpenImageDetail)
+					setOnHover(false)
+				}}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+			>
+				<Fade in={isOpenImageDetail} disableStrictModeCompat>
+					<ImageDetail isOpen={isOpenImageDetail} product={product} />
+				</Fade>
+			</Modal>
 		</Grid>
 	)
 }

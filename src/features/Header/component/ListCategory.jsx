@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		marginBottom: 'auto',
+		padding: 0,
 	},
 	categoryItem: {
 		textDecoration: 'none',
