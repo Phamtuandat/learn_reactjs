@@ -1,6 +1,7 @@
-import { Container, Grid, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import React from 'react'
 import Slider from './Component/Slider'
+import Main from './page/Container'
 
 const useStyles = makeStyles((theme) => ({}))
 function HomePage() {
@@ -8,36 +9,7 @@ function HomePage() {
 	return (
 		<div className={classes.root}>
 			<Slider />
-			<Container maxWidth={false}>
-				<Grid container>
-					<Grid item lg={12} md={12} xs={12}>
-						{/* container item collum */}
-						<Container maxWidth={false}>
-							<Grid container>
-								<Grid item lg={12} md={12}>
-									item
-								</Grid>
-							</Grid>
-						</Container>
-						{/* container item collum */}
-						<Container maxWidth={false}>
-							<Grid container>
-								<Grid item lg={12} md={12}>
-									item
-								</Grid>
-							</Grid>
-						</Container>
-						{/* container item collum */}
-						<Container maxWidth={false}>
-							<Grid container>
-								<Grid item lg={12} md={12}>
-									item
-								</Grid>
-							</Grid>
-						</Container>
-					</Grid>
-				</Grid>
-			</Container>
+			<Main />
 		</div>
 	)
 }

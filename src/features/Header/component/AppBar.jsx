@@ -17,17 +17,16 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import { AccountCircle } from '@material-ui/icons'
 import CancelIcon from '@material-ui/icons/Cancel'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
-import { logout } from 'features/Auth/authSlice'
 import Login from 'features/Auth/component/Login'
 import Register from 'features/Auth/component/Register'
 import { countItems } from 'features/Cart/CartSelector'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -98,7 +97,6 @@ function Appbar(props) {
 
 	const loggerUser = useSelector((state) => state.userReducer.current)
 	const isLogging = !!loggerUser?.id
-	const dispatch = useDispatch()
 	const handleClick = (event) => {
 		handleOpen({
 			anchorEl: event.currentTarget,
@@ -110,8 +108,6 @@ function Appbar(props) {
 		})
 	}
 	const handleLogout = () => {
-		const action = logout()
-		dispatch(action)
 		handleCloseMenu()
 	}
 

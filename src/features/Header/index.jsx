@@ -1,7 +1,9 @@
 import { Box, makeStyles } from '@material-ui/core'
 import categoryApi from 'api/categoryAPI'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { addCategoryList } from './CategorySlice'
 import AppBar from './component/AppBar'
 import ListCategory from './component/ListCategory'
 
@@ -23,18 +25,23 @@ const useStyles = makeStyles((theme) => ({
 function Header() {
 	const classes = useStyles()
 
+	const dispatch = useDispatch()
+
 	const [categoryList, setCategoryList] = useState()
 
 	useEffect(() => {
 		try {
 			;(async () => {
 				const resp = await categoryApi.getAll()
-				setCategoryList(resp.data)
+				const categories = resp.data
+				setCategoryList(categories)
+				console.log(categories)
+				dispatch(addCategoryList(categories))
 			})()
 		} catch {
 			console.log('fail to load category list')
 		}
-	}, [])
+	}, [dispatch])
 	return (
 		<Box className={classes.root}>
 			<AppBar />

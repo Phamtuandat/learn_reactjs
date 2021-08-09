@@ -5,11 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
-import categoryApi from 'api/categoryAPI'
 import { logout } from 'features/Auth/authSlice'
 import { countItems } from 'features/Cart/CartSelector'
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import ReponsiveAppBar from './ReponsiveAppBar'
@@ -91,14 +90,6 @@ function NavBar(props) {
 		}))
 	}
 
-	const [categoryList, setCategoryList] = useState()
-	useEffect(() => {
-		;(async () => {
-			const resp = await categoryApi.getAll()
-			const categoryList = resp.data
-			setCategoryList(categoryList)
-		})()
-	}, [])
 	const loggerUser = useSelector((state) => state.userReducer.current)
 	const isLogging = !!loggerUser?.id
 	const dispatch = useDispatch()
@@ -171,7 +162,6 @@ function NavBar(props) {
 					handleClick={handleOpen}
 					isLogging={isLogging}
 					handleLogout={handleLogout}
-					categoryList={categoryList}
 				/>
 			</Drawer>
 		</div>

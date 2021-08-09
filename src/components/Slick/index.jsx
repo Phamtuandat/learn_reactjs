@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	dot: {
-		top: -30,
 		color: 'transparent',
 		[theme.breakpoints.down('xs')]: {
 			position: 'absolute',
