@@ -35,7 +35,6 @@ function Header() {
 				const resp = await categoryApi.getAll()
 				const categories = resp.data
 				setCategoryList(categories)
-				console.log(categories)
 				dispatch(addCategoryList(categories))
 			})()
 		} catch {

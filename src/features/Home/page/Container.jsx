@@ -33,6 +33,8 @@ function Main(props) {
 	const classes = useStyles()
 
 	const categories = useSelector((state) => state.categories.categoryList)
+	const images = (category) =>
+		`https://meros-custom-color-1-demo.mybigcommerce.com/product_images/uploaded_images/images-custom-block-${category.id}.jpg`
 
 	return (
 		<Container className={classes.root}>
@@ -42,10 +44,10 @@ function Main(props) {
 			</Box>
 			<Grid container>
 				<Grid item lg={12} md={12} sm={12} xs={12}>
-					<Grid container spacing={8}>
+					<Grid container spacing={4}>
 						{categories.map((category) => (
-							<Grid item lg={4} md={4} sm={6} xs={12}>
-								<Category category={category} />
+							<Grid item lg={4} md={4} sm={6} xs={12} key={category.id}>
+								<Category category={category} image={images(category)} />
 							</Grid>
 						))}
 					</Grid>
