@@ -1,5 +1,6 @@
-import { Box, CardMedia, makeStyles, Typography } from '@material-ui/core'
+import { Box, CardMedia, makeStyles, Typography, Link } from '@material-ui/core'
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -7,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom: '4px solid #eee',
 		'&:hover div:last-child': {
 			opacity: 1,
+		},
+		color: theme.palette.text.primary,
+		'&:hover': {
+			textDecoration: 'none',
 		},
 	},
 	mediaBox: {
@@ -89,9 +94,8 @@ const useStyles = makeStyles((theme) => ({
 function Category({ category = [], image = [] }) {
 	const classes = useStyles()
 
-	console.log(category)
 	return (
-		<Box className={classes.root}>
+		<Link component={NavLink} to="/products" className={classes.root}>
 			<Box className={classes.mediaBox}>
 				<CardMedia image={image} title={category.name} className={classes.media} />
 				<Box className={classes.hoverColection}>
@@ -109,7 +113,7 @@ function Category({ category = [], image = [] }) {
 			<Box className={classes.contentBox}>
 				<Typography variant="h6">{category.name}</Typography>
 			</Box>
-		</Box>
+		</Link>
 	)
 }
 
