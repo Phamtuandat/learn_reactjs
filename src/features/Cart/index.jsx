@@ -30,14 +30,14 @@ function CartFeatures(props) {
 			</Typography>
 			{count ? (
 				<Grid container spacing={3}>
-					<Grid item lg={9} md={9} xs={12}>
+					<Grid item lg={9} md={7} xs={12}>
 						{cartItems.map((cartItem) => (
 							<Paper className={classes.left} key={cartItem.id}>
 								<CartList cartItem={cartItem} />
 							</Paper>
 						))}
 					</Grid>
-					<Grid item lg={3} md={3} xs={12}>
+					<Grid item lg={3} md={5} xs={12}>
 						<Paper className={classes.right}>
 							<CartTotalPrice />
 						</Paper>

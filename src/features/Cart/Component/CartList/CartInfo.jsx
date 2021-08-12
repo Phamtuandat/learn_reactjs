@@ -31,6 +31,18 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		justifyContent: 'center',
 	},
+	saleBox: {
+		margin: '10px 0 10px 0',
+	},
+	salePrice: {
+		color: theme.palette.error.dark,
+	},
+	originalPrice: {
+		fontSize: '12px',
+		textDecoration: 'line-through',
+		color: theme.palette.grey[700],
+		marginRight: '10px',
+	},
 }))
 function CartInfo({ product }) {
 	const classes = useStyles()
@@ -47,6 +59,22 @@ function CartInfo({ product }) {
 				<Typography variant="caption" component="h2" className={classes.info}>
 					{product.shortDescription}
 				</Typography>
+				<Box className={classes.saleBox}>
+					<Box component="span" className={classes.originalPrice}>
+						{new Intl.NumberFormat({
+							style: 'currency',
+							currency: 'VND',
+						}).format(product.originalPrice)}
+						đ
+					</Box>
+					<Box component="span" className={classes.salePrice}>
+						{new Intl.NumberFormat({
+							style: 'currency',
+							currency: 'VND',
+						}).format(product.salePrice)}
+						đ
+					</Box>
+				</Box>
 			</Box>
 		</Box>
 	)

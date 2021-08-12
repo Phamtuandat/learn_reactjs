@@ -73,6 +73,8 @@ function ListPage(props) {
 		return () => clearTimeout()
 	}, [queryParam])
 	useEffect(() => {
+		document.body.scrollTop = 0
+		document.documentElement.scrollTop = 0
 		try {
 			;(async () => {
 				const categoryList = await categoryApi.getAll()

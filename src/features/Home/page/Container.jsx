@@ -2,6 +2,7 @@ import { Box, Container, Grid, makeStyles } from '@material-ui/core'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Category from '../Component/Category'
+import TopSale from '../Component/TopSale'
 import TrendSlick from '../Component/TrendSlick'
 
 const useStyles = makeStyles((theme) => ({
@@ -84,6 +85,12 @@ function Main(props) {
 					<TrendSlick productList={categories[0]?.products} />
 				</Grid>
 			</Grid>
+			<Box className={classes.headerTrend}>
+				<Box className={classes.headerTrendLine} />
+				<Box className={classes.headerTrendTitle}>Bán Chạy Nhất</Box>
+			</Box>
+
+			<TopSale productList={categories[0]?.products} />
 		</Container>
 	)
 }

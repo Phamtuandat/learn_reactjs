@@ -132,14 +132,12 @@ function NavBar(props) {
 					<Toolbar className={classes.home}>
 						<Hidden mdUp>
 							<Box className={classes.menuIcon}>
-								<NavLink className={classes.link} to="/products">
-									<IconButton onClick={() => handleOpen({ openNav: true })}>
-										<MenuIcon />
-									</IconButton>
-								</NavLink>
+								<IconButton onClick={() => handleOpen({ openNav: true })}>
+									<MenuIcon />
+								</IconButton>
 							</Box>
 						</Hidden>
-						<Link component={NavLink} to="/products" className={classes.logoBox}>
+						<Link component={NavLink} to="/" className={classes.logoBox}>
 							<img
 								className={classes.logo}
 								src="https://cdn11.bigcommerce.com/s-wek9ye9/images/stencil/280x30/logo_1513222786__03534.original.png"

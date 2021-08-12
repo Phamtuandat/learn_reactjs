@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
 		color: 'white',
 		borderRadius: 0,
 		marginTop: 10,
+		'&:hover': {
+			backgroundColor: 'black',
+			opacity: 0.8,
+		},
 	},
 }))
 function Product({ product = {} }) {

@@ -1,11 +1,10 @@
 import { Box, makeStyles } from '@material-ui/core'
 import categoryApi from 'api/categoryAPI'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { addCategoryList } from './CategorySlice'
 import AppBar from './component/AppBar'
-import ListCategory from './component/ListCategory'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,14 +26,11 @@ function Header() {
 
 	const dispatch = useDispatch()
 
-	const [categoryList, setCategoryList] = useState()
-
 	useEffect(() => {
 		try {
 			;(async () => {
 				const resp = await categoryApi.getAll()
 				const categories = resp.data
-				setCategoryList(categories)
 				dispatch(addCategoryList(categories))
 			})()
 		} catch {
@@ -51,7 +47,6 @@ function Header() {
 					alt="logo"
 				/>
 			</NavLink>
-			<ListCategory categoryList={categoryList} />
 		</Box>
 	)
 }
